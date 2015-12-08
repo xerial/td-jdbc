@@ -29,6 +29,8 @@ import org.json.simple.JSONValue;
 import java.sql.*;
 import java.util.*;
 
+import static com.treasuredata.jdbc.TDJDBCException.UNSUPPORTED;
+
 public class TDDatabaseMetaData
     implements DatabaseMetaData, Constants {
     private final TDClient client;
@@ -45,8 +47,7 @@ public class TDDatabaseMetaData
 
     public boolean allProceduresAreCallable()
         throws SQLException {
-        throw new SQLException(new UnsupportedOperationException(
-            "TDDatabaseMetaData#allProceduresAreCallable()"));
+        throw UNSUPPORTED();
     }
 
     public boolean allTablesAreSelectable()
@@ -56,48 +57,40 @@ public class TDDatabaseMetaData
 
     public boolean autoCommitFailureClosesAllResultSets()
         throws SQLException {
-        throw new SQLException(new UnsupportedOperationException(
-            "TDDatabaseMetaData#autoCommitFailureClosesAllResultSets()"));
+        throw UNSUPPORTED();
     }
 
     public boolean dataDefinitionCausesTransactionCommit()
         throws SQLException {
-        throw new SQLException(new UnsupportedOperationException(
-            "TDDatabaseMetaData#dataDefinitionCausesTransactionCommit()"));
+        throw UNSUPPORTED();
     }
 
     public boolean dataDefinitionIgnoredInTransactions()
         throws SQLException {
-        throw new SQLException(new UnsupportedOperationException(
-            "TDDatabaseMetaData#dataDefinitionIgnoredInTransactions()"));
+        throw UNSUPPORTED();
     }
 
     public boolean deletesAreDetected(int type)
         throws SQLException {
-        throw new SQLException(new UnsupportedOperationException(
-            "TDDatabaseMetaData#deletesAreDetected(int)"));
+        throw UNSUPPORTED();
     }
 
     public boolean doesMaxRowSizeIncludeBlobs()
         throws SQLException {
-        throw new SQLException(new UnsupportedOperationException(
-            "TDDatabaseMetaData#doesMaxRowSizeIncludeBlobs()"));
+        throw UNSUPPORTED();
     }
 
     public ResultSet getAttributes(String catalog, String schemaPattern,
                                    String typeNamePattern, String attributeNamePattern)
-        throws SQLException {
-        throw new SQLException(
-            new UnsupportedOperationException(
-                "TDDatabaseMetaData#getAttributes(String, String, String, String)"));
+        throws SQLException
+    {
+        throw UNSUPPORTED();
     }
 
     public ResultSet getBestRowIdentifier(String catalog, String schema,
                                           String table, int scope, boolean nullable)
         throws SQLException {
-        throw new SQLException(
-            new UnsupportedOperationException(
-                "TDDatabaseMetaData#getBestRowIdentifier(String, String, String, int, boolean)"));
+        throw UNSUPPORTED();
     }
 
     public String getCatalogSeparator()
@@ -146,16 +139,13 @@ public class TDDatabaseMetaData
 
     public ResultSet getClientInfoProperties()
         throws SQLException {
-        throw new SQLException(new UnsupportedOperationException(
-            "TDDatabaseMetaData#getClientInfoProperties()"));
+        throw UNSUPPORTED();
     }
 
     public ResultSet getColumnPrivileges(String catalog, String schema,
                                          String table, String columnNamePattern)
         throws SQLException {
-        throw new SQLException(
-            new UnsupportedOperationException(
-                "TDDatabaseMetaData#getColumnPrivileges(String, String, String, String)"));
+        throw UNSUPPORTED();
     }
 
     /**
@@ -423,23 +413,23 @@ public class TDDatabaseMetaData
 
     public ResultSet getExportedKeys(String catalog, String schema, String table)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public String getExtraNameCharacters()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public ResultSet getFunctionColumns(String arg0, String arg1, String arg2,
                                         String arg3)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public ResultSet getFunctions(String arg0, String arg1, String arg2)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public String getIdentifierQuoteString()
@@ -477,7 +467,7 @@ public class TDDatabaseMetaData
 
     public int getMaxBinaryLiteralLength()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     /**
@@ -491,7 +481,7 @@ public class TDDatabaseMetaData
 
     public int getMaxCharLiteralLength()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     /**
@@ -505,17 +495,17 @@ public class TDDatabaseMetaData
 
     public int getMaxColumnsInGroupBy()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public int getMaxColumnsInIndex()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public int getMaxColumnsInOrderBy()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     /**
@@ -537,22 +527,22 @@ public class TDDatabaseMetaData
 
     public int getMaxConnections()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public int getMaxCursorNameLength()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public int getMaxIndexLength()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public int getMaxProcedureNameLength()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     /**
@@ -566,7 +556,7 @@ public class TDDatabaseMetaData
 
     public int getMaxSchemaNameLength()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     /**
@@ -580,7 +570,7 @@ public class TDDatabaseMetaData
 
     public int getMaxStatements()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     /**
@@ -630,7 +620,7 @@ public class TDDatabaseMetaData
     public ResultSet getProcedureColumns(String catalog, String schemaPattern,
                                          String procedureNamePattern, String columnNamePattern)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public String getProcedureTerm()
@@ -646,12 +636,12 @@ public class TDDatabaseMetaData
 
     public int getResultSetHoldability()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public RowIdLifetime getRowIdLifetime()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public String getSQLKeywords()
@@ -711,13 +701,13 @@ public class TDDatabaseMetaData
     public ResultSet getSuperTables(String catalog, String schemaPattern,
                                     String tableNamePattern)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public ResultSet getSuperTypes(String catalog, String schemaPattern,
                                    String typeNamePattern)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public String getSystemFunctions()
@@ -728,7 +718,7 @@ public class TDDatabaseMetaData
     public ResultSet getTablePrivileges(String catalog, String schemaPattern,
                                         String tableNamePattern)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public ResultSet getTableTypes()
@@ -1027,28 +1017,28 @@ public class TDDatabaseMetaData
 
     public String getURL()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public String getUserName()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public ResultSet getVersionColumns(String catalog, String schema,
                                        String table)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean insertsAreDetected(int type)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean isCatalogAtStart()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean isReadOnly()
@@ -1058,62 +1048,62 @@ public class TDDatabaseMetaData
 
     public boolean locatorsUpdateCopy()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean nullPlusNonNullIsNull()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean nullsAreSortedAtEnd()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean nullsAreSortedAtStart()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean nullsAreSortedHigh()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean nullsAreSortedLow()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean othersDeletesAreVisible(int type)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean othersInsertsAreVisible(int type)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean othersUpdatesAreVisible(int type)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean ownDeletesAreVisible(int type)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean ownInsertsAreVisible(int type)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean ownUpdatesAreVisible(int type)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean storesLowerCaseIdentifiers()
@@ -1123,7 +1113,7 @@ public class TDDatabaseMetaData
 
     public boolean storesLowerCaseQuotedIdentifiers()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean storesMixedCaseIdentifiers()
@@ -1133,7 +1123,7 @@ public class TDDatabaseMetaData
 
     public boolean storesMixedCaseQuotedIdentifiers()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean storesUpperCaseIdentifiers()
@@ -1143,22 +1133,22 @@ public class TDDatabaseMetaData
 
     public boolean storesUpperCaseQuotedIdentifiers()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsANSI92EntryLevelSQL()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsANSI92FullSQL()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsANSI92IntermediateSQL()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsAlterTableWithAddColumn()
@@ -1208,57 +1198,57 @@ public class TDDatabaseMetaData
 
     public boolean supportsConvert()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsConvert(int fromType, int toType)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsCoreSQLGrammar()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsCorrelatedSubqueries()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsDataDefinitionAndDataManipulationTransactions()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsDataManipulationTransactionsOnly()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsDifferentTableCorrelationNames()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsExpressionsInOrderBy()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsExtendedSQLGrammar()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsFullOuterJoins()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsGetGeneratedKeys()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsGroupBy()
@@ -1268,47 +1258,47 @@ public class TDDatabaseMetaData
 
     public boolean supportsGroupByBeyondSelect()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsGroupByUnrelated()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsIntegrityEnhancementFacility()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsLikeEscapeClause()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsLimitedOuterJoins()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsMinimumSQLGrammar()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsMixedCaseIdentifiers()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsMixedCaseQuotedIdentifiers()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsMultipleOpenResults()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsMultipleResultSets()
@@ -1318,12 +1308,12 @@ public class TDDatabaseMetaData
 
     public boolean supportsMultipleTransactions()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsNamedParameters()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsNonNullableColumns()
@@ -1333,27 +1323,27 @@ public class TDDatabaseMetaData
 
     public boolean supportsOpenCursorsAcrossCommit()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsOpenCursorsAcrossRollback()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsOpenStatementsAcrossCommit()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsOpenStatementsAcrossRollback()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsOrderByUnrelated()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsOuterJoins()
@@ -1373,7 +1363,7 @@ public class TDDatabaseMetaData
 
     public boolean supportsResultSetConcurrency(int type, int concurrency)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsResultSetHoldability(int holdability)
@@ -1423,12 +1413,12 @@ public class TDDatabaseMetaData
 
     public boolean supportsStatementPooling()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsStoredFunctionsUsingCallSyntax()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsStoredProcedures()
@@ -1438,32 +1428,32 @@ public class TDDatabaseMetaData
 
     public boolean supportsSubqueriesInComparisons()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsSubqueriesInExists()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsSubqueriesInIns()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsSubqueriesInQuantifieds()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsTableCorrelationNames()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsTransactionIsolationLevel(int level)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsTransactions()
@@ -1473,36 +1463,36 @@ public class TDDatabaseMetaData
 
     public boolean supportsUnion()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean supportsUnionAll()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean updatesAreDetected(int type)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean usesLocalFilePerTable()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean usesLocalFiles()
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public boolean isWrapperFor(Class<?> iface)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 
     public <T> T unwrap(Class<T> iface)
         throws SQLException {
-        throw new SQLException("Method not supported");
+        throw UNSUPPORTED();
     }
 }

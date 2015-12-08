@@ -19,6 +19,8 @@
 package com.treasuredata.jdbc;
 
 import com.treasure_data.client.ClientException;
+import com.treasuredata.client.TDClientException;
+import com.treasuredata.client.model.TDJobSummary;
 import com.treasuredata.jdbc.command.ClientAPI;
 import com.treasure_data.model.Job;
 import com.treasure_data.model.JobSummary;
@@ -198,7 +200,7 @@ public class TDResultSet
     private ClientAPI.ExtUnpacker fetchRows()
             throws SQLException
     {
-        JobSummary jobSummary = null;
+        TDJobSummary jobSummary = null;
 
         Callable<JobSummary> callback = new Callable<JobSummary>()
         {
@@ -238,7 +240,7 @@ public class TDResultSet
             initColumnNamesAndTypes(jobSummary.getResultSchema());
             return clientApi.getJobResult2(job);
         }
-        catch (ClientException e) {
+        catch (TDClientException e) {
             throw new SQLException(e);
         }
     }
