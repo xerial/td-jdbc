@@ -29,10 +29,10 @@ public class TDTable
         TABLE, VIEW, EXTERNAL_TABLE
     }
 
-    private String tableCatalog;
-    private String tableName;
-    private String type;
-    private String comment;
+    private final String tableCatalog;
+    private final String tableName;
+    private final String type;
+    private final String comment;
 
     public TDTable(String tableCatalog, String tableName, String type,
             String comment)

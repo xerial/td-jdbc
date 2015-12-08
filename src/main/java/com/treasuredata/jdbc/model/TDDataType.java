@@ -37,24 +37,24 @@ public enum TDDataType
     DOUBLE("DOUBLE", 8, 52, null, null, null, (short) 1, false, (short) 2,
             false, false, false, "DOUBLE", null, null, null, null, 2);
 
-    private String typeName;
-    private Integer dataType;
-    private Integer precision;
-    private String literalPrefix;
-    private String literalSuffix;
-    private String createParams;
-    private Short nullable;
-    private Boolean caseSensitive;
-    private Short searchable;
-    private Boolean unsignedAttr;
-    private Boolean fixedPrecScale;
-    private Boolean autoIncrement;
-    private String localTypeName;
-    private Short minimumScale;
-    private Short maximumScale;
-    private Integer sqlDataType;
-    private Integer sqlDatetimeSub;
-    private Integer numPrecRadix;
+    private final String typeName;
+    private final Integer dataType;
+    private final Integer precision;
+    private final String literalPrefix;
+    private final String literalSuffix;
+    private final String createParams;
+    private final Short nullable;
+    private final Boolean caseSensitive;
+    private final Short searchable;
+    private final Boolean unsignedAttr;
+    private final Boolean fixedPrecScale;
+    private final Boolean autoIncrement;
+    private final String localTypeName;
+    private final Short minimumScale;
+    private final Short maximumScale;
+    private final Integer sqlDataType;
+    private final Integer sqlDatetimeSub;
+    private final Integer numPrecRadix;
 
     private TDDataType(String name, Integer dataType, Integer precision,
             String literalPrefix, String literalSuffix, String createParams,

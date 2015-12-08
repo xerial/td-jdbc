@@ -18,7 +18,7 @@
  */
 package com.treasuredata.jdbc;
 
-import com.treasure_data.model.Job;
+import com.treasuredata.client.model.TDJob;
 
 import java.sql.SQLException;
 
@@ -28,14 +28,17 @@ public class ConfigBuilder
     private String database = "default";
     private String user;
     private String password;
-    private Job.Type type = Job.Type.PRESTO; // Use presto by default
+    private TDJob.Type type = TDJob.Type.PRESTO; // Use presto by default
     private ApiConfig apiConfig;
     private int resultRetryCountThreshold = Config.TD_JDBC_RESULT_RETRYCOUNT_THRESHOLD_DEFAULTVALUE;
     private long resultRetryWaitTimeMs = Config.TD_JDBC_RESULT_RETRY_WAITTIME_DEFAULTVALUE;
 
-    public ConfigBuilder() {}
+    public ConfigBuilder()
+    {
+    }
 
-    public ConfigBuilder(Config config) {
+    public ConfigBuilder(Config config)
+    {
         this.url = config.url;
         this.database = config.database;
         this.user = config.user;
@@ -49,7 +52,7 @@ public class ConfigBuilder
     public ConfigBuilder setUrl(String url)
     {
         this.url = url;
-         return this;
+        return this;
     }
 
     public ConfigBuilder setDatabase(String database)
@@ -70,32 +73,36 @@ public class ConfigBuilder
         return this;
     }
 
-    public ConfigBuilder setType(Job.Type type)
+    public ConfigBuilder setType(TDJob.Type type)
             throws SQLException
     {
-        if (type == null || !(type.equals(Job.Type.HIVE) || type.equals(Job.Type.PRESTO))) {
+        if (type == null || !(type.equals(TDJob.Type.HIVE) || type.equals(TDJob.Type.PRESTO))) {
             throw new SQLException("invalid job type within URL: " + type);
         }
         this.type = type;
         return this;
     }
 
-    public ConfigBuilder setApiConfig(ApiConfig apiConfig) {
-        this.apiConfig =apiConfig;
+    public ConfigBuilder setApiConfig(ApiConfig apiConfig)
+    {
+        this.apiConfig = apiConfig;
         return this;
     }
 
-    public ConfigBuilder setResultRetryCountThreshold(int resultRetryCountThreshold) {
+    public ConfigBuilder setResultRetryCountThreshold(int resultRetryCountThreshold)
+    {
         this.resultRetryCountThreshold = resultRetryCountThreshold;
         return this;
     }
 
-    public ConfigBuilder setResultRetryWaitTimeMs(long resultRetryWaitTimeMs) {
+    public ConfigBuilder setResultRetryWaitTimeMs(long resultRetryWaitTimeMs)
+    {
         this.resultRetryWaitTimeMs = resultRetryWaitTimeMs;
         return this;
     }
 
-    public Config createConnectionConfig() throws SQLException
+    public Config createConnectionConfig()
+            throws SQLException
     {
         return new Config(url,
                 database,
@@ -105,6 +112,6 @@ public class ConfigBuilder
                 apiConfig != null ? apiConfig : new ApiConfig.ApiConfigBuilder().createApiConfig(),
                 resultRetryCountThreshold,
                 resultRetryWaitTimeMs
-                );
+        );
     }
 }

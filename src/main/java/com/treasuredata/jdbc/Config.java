@@ -18,7 +18,9 @@
  */
 package com.treasuredata.jdbc;
 
-import com.treasure_data.model.Job;
+
+import com.treasuredata.client.TDClientConfig;
+import com.treasuredata.client.model.TDJob;
 
 import java.sql.SQLException;
 import java.util.Properties;
@@ -45,7 +47,7 @@ public class Config
     public final String database;
     public final String user;
     public final String password;
-    public final Job.Type type;
+    public final TDJob.Type type;
     public final ApiConfig apiConfig;
     public final int resultRetryCountThreshold;
     public final long resultRetryWaitTimeMs;
@@ -55,7 +57,7 @@ public class Config
             String database,
             String user,
             String password,
-            Job.Type type,
+            TDJob.Type type,
             ApiConfig apiConfig,
             int resultRetryCountThreshold,
             long resultRetryWaitTimeMs
@@ -66,7 +68,7 @@ public class Config
         this.database = database;
         this.user = user;
         this.password = password;
-        if (type == null || !(type.equals(Job.Type.HIVE) || type.equals(Job.Type.PRESTO))) {
+        if (type == null || !(type.equals(TDJob.Type.HIVE) || type.equals(TDJob.Type.PRESTO))) {
             throw new SQLException("invalid job type within URL: " + type);
         }
         this.type = type;
@@ -83,7 +85,7 @@ public class Config
         if(password != null) {
             prop.setProperty(TD_JDBC_PASSWORD, password);
         }
-        prop.setProperty(TD_JDBC_JOB_TYPE, type.type());
+        prop.setProperty(TD_JDBC_JOB_TYPE, type.getType());
         prop.putAll(apiConfig.toProperties());
         return prop;
     }
@@ -179,7 +181,7 @@ public class Config
                     config.setPassword(v);
                 }
                 else if (k.equals(TD_JDBC_JOB_TYPE)) {
-                    config.setType(Job.toType(v));
+                    config.setType(TDJob.Type.fromString(v));
                 }
                 else if (k.equals(TD_JDBC_USESSL)) {
                     apiConfig.setUseSSL(Boolean.parseBoolean(kv[1].toLowerCase()));
@@ -285,12 +287,12 @@ public class Config
         // Override URL parameters via Properties, then System properties.
 
         // api endpoint
-        String apiHost = getJDBCProperty(props, TD_API_SERVER_HOST);
+        String apiHost = getJDBCProperty(props, TDClientConfig.TD_CLIENT_API_ENDPOINT);
         if(apiHost != null) {
             apiConfig.setEndpoint(apiHost);
         }
         // api port
-        String apiPortStr = getJDBCProperty(props, TD_API_SERVER_PORT);
+        String apiPortStr = getJDBCProperty(props, TDClientConfig.TD_CLIENT_API_PORT);
         if(apiPortStr != null) {
             try {
                 apiConfig.setPort(Integer.parseInt(apiPortStr));
@@ -313,7 +315,7 @@ public class Config
             apiKey = System.getenv().get("TD_API_KEY");
         }
         if(apiKey == null) {
-            apiKey = getJDBCProperty(props, TD_JDBC_APIKEY, TD_API_KEY);
+            apiKey = getJDBCProperty(props, TD_JDBC_APIKEY, TDClientConfig.TD_CLIENT_APIKEY);
         }
 
         if(isEmptyString(apiKey)) {

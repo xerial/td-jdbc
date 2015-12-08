@@ -16,19 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.treasuredata.jdbc.model;
+package com.treasuredata.jdbc;
 
-public class TDDatabase
+import java.sql.SQLException;
+
+/**
+ *
+ */
+public class TDJDBCException
 {
-    private String databaseName;
-
-    public TDDatabase(String databaseName)
+    public static SQLException UNSUPPORTED()
     {
-        this.databaseName = databaseName;
-    }
-
-    public String getDatabaseName()
-    {
-        return databaseName;
+        Throwable t = new Throwable();
+        StackTraceElement caller = t.getStackTrace()[1];
+        return new SQLException(new UnsupportedOperationException(String.format("%s (%s:%s)", caller.getMethodName(), caller.getFileName(), caller.getLineNumber())));
     }
 }

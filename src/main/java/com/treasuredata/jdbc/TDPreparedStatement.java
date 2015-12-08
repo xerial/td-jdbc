@@ -18,8 +18,8 @@
  */
 package com.treasuredata.jdbc;
 
+import com.treasuredata.client.model.TDJob;
 import com.treasuredata.jdbc.command.CommandContext;
-import com.treasure_data.model.Job;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -44,6 +44,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import static com.treasuredata.jdbc.TDJDBCException.UNSUPPORTED;
 
 public class TDPreparedStatement
         extends TDStatement
@@ -81,13 +83,13 @@ public class TDPreparedStatement
     public void addBatch()
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#clearBatch()"));
+        throw UNSUPPORTED();
     }
 
     public void clearBatch()
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#clearBatch()"));
+        throw UNSUPPORTED();
     }
 
     public boolean execute()
@@ -137,21 +139,21 @@ public class TDPreparedStatement
             }
             char c = sql.charAt(i);
             switch (c) {
-            case '\\':
-                escaping = true;
-                break;
-            case '\'':
-                // record the count of char "'"
-                quoted = !quoted;
-                break;
-            default:
-                if (c == cchar && !quoted) {
-                    num++;
-                    if (num == paramLoc) {
-                        return i;
+                case '\\':
+                    escaping = true;
+                    break;
+                case '\'':
+                    // record the count of char "'"
+                    quoted = !quoted;
+                    break;
+                default:
+                    if (c == cchar && !quoted) {
+                        num++;
+                        if (num == paramLoc) {
+                            return i;
+                        }
                     }
-                }
-                break;
+                    break;
             }
         }
         return -1;
@@ -161,13 +163,13 @@ public class TDPreparedStatement
     public int[] executeBatch()
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#executeBatch()"));
+        throw UNSUPPORTED();
     }
 
     public int executeUpdate()
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#executeUpdate()"));
+        throw UNSUPPORTED();
     }
 
     public ResultSetMetaData getMetaData()
@@ -179,145 +181,145 @@ public class TDPreparedStatement
     public ParameterMetaData getParameterMetaData()
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#getParameterMetaData()"));
+        throw UNSUPPORTED();
     }
 
     public void setArray(int i, Array x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setArray(int, Array)"));
+        throw UNSUPPORTED();
     }
 
     public void setAsciiStream(int i, InputStream in)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setAsciiStream(int, InputStream)"));
+        throw UNSUPPORTED();
     }
 
     public void setAsciiStream(int i, InputStream in, int length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setAsciiStream(int, InputStream, int)"));
+        throw UNSUPPORTED();
     }
 
     public void setAsciiStream(int i, InputStream in, long length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setAsciiStream(int, InputStream, long)"));
+        throw UNSUPPORTED();
     }
 
     public void setBigDecimal(int parameterIndex, BigDecimal x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setBigDecimal(int, BigDecimal)"));
+        throw UNSUPPORTED();
     }
 
     public void setBinaryStream(int i, InputStream x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setBinaryStream(int, InputStream)"));
+        throw UNSUPPORTED();
     }
 
     public void setBinaryStream(int i, InputStream in, int length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setBinaryStream(int, InputStream, int)"));
+        throw UNSUPPORTED();
     }
 
     public void setBinaryStream(int i, InputStream in, long length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setBinaryStream(int, InputStream, long)"));
+        throw UNSUPPORTED();
     }
 
     public void setBlob(int i, Blob x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setBlob(int, Blob)"));
+        throw UNSUPPORTED();
     }
 
     public void setBlob(int i, InputStream inputStream)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setBlob(int, InputStream)"));
+        throw UNSUPPORTED();
     }
 
     public void setBlob(int i, InputStream inputStream, long length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setBlob(int, InputStream, long)"));
+        throw UNSUPPORTED();
     }
 
     public void setBoolean(int parameterIndex, boolean x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setBoolean(int, boolean)"));
+        throw UNSUPPORTED();
     }
 
     public void setByte(int i, byte x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setByte(int, byte)"));
+        throw UNSUPPORTED();
     }
 
     public void setBytes(int i, byte[] x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setBytes(int, byte[])"));
+        throw UNSUPPORTED();
     }
 
     public void setCharacterStream(int i, Reader reader)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setCharacterStream(int, Reader)"));
+        throw UNSUPPORTED();
     }
 
     public void setCharacterStream(int i, Reader reader, int length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setCharacterStream(int, Reader, int)"));
+        throw UNSUPPORTED();
     }
 
     public void setCharacterStream(int i, Reader reader, long length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setCharacterStream(int, Reader, long)"));
+        throw UNSUPPORTED();
     }
 
     public void setClob(int i, Clob x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setClob(int, Clob)"));
+        throw UNSUPPORTED();
     }
 
     public void setClob(int i, Reader reader)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setClob(int, Reader)"));
+        throw UNSUPPORTED();
     }
 
     public void setClob(int i, Reader reader, long length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setClob(int, Reader, long)"));
+        throw UNSUPPORTED();
     }
 
     public void setDate(int i, Date x)
             throws SQLException
     {
-        if (conn.getConfig().type == Job.Type.PRESTO) {
+        if (conn.getConfig().type == TDJob.Type.PRESTO) {
             preparedParameters.put(i, "DATE '" + x.toString() + "'");
         }
         else {
             throw new SQLException(new UnsupportedOperationException(
-                    "TDPreparedStatement#setDate(int, Date) is supported for Presto query only"));
+                    "TDPreparedStatement#setDate(int, Date) is supported only for Presto query"));
         }
     }
 
     public void setDate(int i, Date x, Calendar cal)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setDate(int, Date, Calender)"));
+        throw UNSUPPORTED();
     }
 
     public void setDouble(int i, double x)
@@ -347,31 +349,31 @@ public class TDPreparedStatement
     public void setNCharacterStream(int i, Reader value)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setNCharacterStream(int, Reader)"));
+        throw UNSUPPORTED();
     }
 
     public void setNCharacterStream(int i, Reader value, long length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setNCharacterStream(int, Reader, long)"));
+        throw UNSUPPORTED();
     }
 
     public void setNClob(int i, NClob value)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setNClob(int, NClob)"));
+        throw UNSUPPORTED();
     }
 
     public void setNClob(int i, Reader reader)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setNClob(int, Reader)"));
+        throw UNSUPPORTED();
     }
 
     public void setNClob(int i, Reader reader, long length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setNClob(int, Reader, long)"));
+        throw UNSUPPORTED();
     }
 
     public void setNString(int i, String value)
@@ -383,55 +385,55 @@ public class TDPreparedStatement
     public void setNull(int i, int sqlType)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setNull(int, int)"));
+        throw UNSUPPORTED();
     }
 
     public void setNull(int i, int sqlType, String typeName)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setNull(int, int, String)"));
+        throw UNSUPPORTED();
     }
 
     public void setObject(int i, Object x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setObject(int, Object)"));
+        throw UNSUPPORTED();
     }
 
     public void setObject(int i, Object x, int targetSqlType)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setObject(int, Object, int)"));
+        throw UNSUPPORTED();
     }
 
     public void setObject(int i, Object x, int targetSqlType, int scale)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setObject(int, Object, int, int)"));
+        throw UNSUPPORTED();
     }
 
     public void setRef(int i, Ref x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setRef(int, Ref)"));
+        throw UNSUPPORTED();
     }
 
     public void setRowId(int i, RowId x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setRowId(int, RowId)"));
+        throw UNSUPPORTED();
     }
 
     public void setSQLXML(int i, SQLXML xmlObject)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setSQLXML(int, SQLXML)"));
+        throw UNSUPPORTED();
     }
 
     public void setShort(int i, short x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setShort(int, short)"));
+        throw UNSUPPORTED();
     }
 
     public void setString(int i, String x)
@@ -444,42 +446,42 @@ public class TDPreparedStatement
     public void setTime(int i, Time x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setTime(int, Time)"));
+        throw UNSUPPORTED();
     }
 
     public void setTime(int i, Time x, Calendar cal)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setTime(int, Time, Calendar)"));
+        throw UNSUPPORTED();
     }
 
     public void setTimestamp(int i, Timestamp x)
             throws SQLException
     {
-        if (conn.getConfig().type == Job.Type.PRESTO) {
+        if (conn.getConfig().type == TDJob.Type.PRESTO) {
             preparedParameters.put(i, "TIMESTAMP '" + x.toString() + "'");
         }
         else {
             throw new SQLException(new UnsupportedOperationException(
-                    "TDPreparedStatement#setTimestamp(int, Timestamp) is supported for Presto query only"));
+                    "TDPreparedStatement#setTimestamp(int, Timestamp) is supported only for Presto query"));
         }
     }
 
     public void setTimestamp(int i, Timestamp x, Calendar cal)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setTimestamp(int, Timestamp, Calendar)"));
+        throw UNSUPPORTED();
     }
 
     public void setURL(int i, URL x)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setURL(int, URL)"));
+        throw UNSUPPORTED();
     }
 
     public void setUnicodeStream(int i, InputStream x, int length)
             throws SQLException
     {
-        throw new SQLException(new UnsupportedOperationException("TDPreparedStatement#setUnicodeStream(int, InputStream, int)"));
+        throw UNSUPPORTED();
     }
 }

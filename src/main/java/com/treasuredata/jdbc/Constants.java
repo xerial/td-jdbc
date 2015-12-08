@@ -19,7 +19,6 @@
 package com.treasuredata.jdbc;
 
 public interface Constants
-        extends com.treasure_data.client.Constants
 {
 
     // The offset at which HSQLDB API Result mode values start.
