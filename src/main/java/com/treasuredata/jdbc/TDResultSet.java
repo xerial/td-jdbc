@@ -52,7 +52,7 @@ public class TDResultSet
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private ClientAPI clientApi;
+    private final TDClient client;
 
     private int maxRows = 0;
 
@@ -60,7 +60,7 @@ public class TDResultSet
 
     private int fetchSize = 50;
 
-    private int queryTimeout = 0; // seconds
+    private final int queryTimeout = 0; // seconds
 
     private ClientAPI.ExtUnpacker fetchedRows;
 

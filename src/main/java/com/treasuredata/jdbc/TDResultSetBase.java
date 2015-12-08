@@ -18,6 +18,9 @@
  */
 package com.treasuredata.jdbc;
 
+import org.msgpack.core.MessageTypeException;
+import org.msgpack.value.Value;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -226,59 +229,7 @@ public abstract class TDResultSetBase
     private boolean getBooleanWithTypeConversion(int index)
             throws SQLException
     {
-        Throwable e = null;
-        Object obj = null;
-        try {
-            obj = getObject(index);
-
-            // if obj is null or NULL value (NilValue), it returns false.
-            if (obj == null || obj instanceof NilValue) {
-                return false;
-            }
-
-            if (obj instanceof BooleanValue) { // msgpack's Boolean type
-                return ((BooleanValue) obj).getBoolean();
-            }
-            else if (obj instanceof Boolean) { // java's Boolean type
-                return ((Boolean) obj).booleanValue();
-            }
-            else if (obj instanceof NumberValue) { // msgpack's Number type
-                return ((NumberValue) obj).asIntegerValue().intValue() != 0;
-            }
-            else if (obj instanceof Number) { // java's Number type
-                return ((Number) obj).intValue() != 0;
-            }
-            else if (obj instanceof RawValue) { // msgpack's raw type
-                return parseStringToBoolean(((RawValue) obj).getString());
-            }
-            else if (obj instanceof String) { // java's raw type
-                return parseStringToBoolean((String) obj);
-            }
-        }
-        catch (Throwable t) {
-            e = t;
-        }
-
-        // implicit type conversion failed
-        String msg = String.format(
-                "Cannot convert column %d from value of %s class to boolean",
-                index, obj);
-        if (e != null) {
-            throw new SQLException(msg, e);
-        }
-        else {
-            throw new SQLException(msg);
-        }
-    }
-
-    private static boolean parseStringToBoolean(String from)
-    {
-        if (from.toLowerCase().equals("false")) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        return TypeConverter.convertToBoolean(getValue(index));
     }
 
     public byte getByte(int index)
@@ -296,59 +247,7 @@ public abstract class TDResultSetBase
     private byte getByteWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        Throwable e = null;
-        Object obj = null;
-        try {
-            obj = getObject(index);
-
-            // if obj is null or NULL value (NilValue), it returns 0.
-            if (obj == null || obj instanceof NilValue) {
-                return 0;
-            }
-
-            if (obj instanceof NumberValue) { // msgpack's Number type
-                NumberValue v = (NumberValue) obj;
-                if (v instanceof IntegerValue) {
-                    if (v.getClass().getName().equals(INTVALUE_CLASSNAME)) {
-                        return (byte) ((IntegerValue) v).getInt();
-                    }
-                    else if (v.getClass().getName().equals(LONGVALUE_CLASSNAME)) {
-                        return (byte) ((IntegerValue) v).getLong();
-                    }
-                }
-                else {
-                    if (v.getClass().getName().equals(DOUBLEVALUE_CLASSNAME)) {
-                        return (byte) ((FloatValue) v).doubleValue();
-                    }
-                    else if (v.getClass().getName().equals(FLOATVALUE_CLASSNAME)) {
-                        return (byte) ((FloatValue) v).floatValue();
-                    }
-                }
-            }
-            else if (obj instanceof Number) { // java's Number type
-                return ((Number) obj).byteValue();
-            }
-            else if (obj instanceof RawValue) { // msgpack's raw type
-                return Byte.parseByte(((RawValue) obj).getString());
-            }
-            else if (obj instanceof String) { // java's raw type
-                return Byte.parseByte((String) obj);
-            }
-        }
-        catch (Throwable t) {
-            e = t;
-        }
-
-        // implicit type conversion failed
-        String msg = String.format(
-                "Cannot convert column %d from value of %s class to byte",
-                index, obj);
-        if (e != null) {
-            throw new SQLException(msg, e);
-        }
-        else {
-            throw new SQLException(msg);
-        }
+        return (byte) TypeConverter.convertToInt(getValue(index));
     }
 
     public byte[] getBytes(int columnIndex)
@@ -414,24 +313,7 @@ public abstract class TDResultSetBase
     public Date getDate(int index)
             throws SQLException
     {
-        // TODO should implement more carefully
-        // TODO
-        Object obj = getObject(index);
-
-        // if obj is NULL (NilValue), it returns null.
-        if (obj == null || obj instanceof NilValue) {
-            return null;
-        }
-
-        try {
-            return Date.valueOf(((Value) obj).asRawValue().getString());
-        }
-        catch (Exception e) {
-            String msg = String.format(
-                    "Cannot convert column %d to date: %s",
-                    index, e.toString());
-            throw new SQLException(msg);
-        }
+        return TypeConverter.convertToDate(getValue(index));
     }
 
     public Date getDate(String columnName)
@@ -467,59 +349,7 @@ public abstract class TDResultSetBase
     private double getDoubleWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        Throwable e = null;
-        Object obj = null;
-        try {
-            obj = getObject(index);
-
-            // if obj is null or NULL value (NilValue), it returns 0.0.
-            if (obj == null || obj instanceof NilValue) {
-                return 0.0;
-            }
-
-            if (obj instanceof NumberValue) { // msgpack's Number type
-                NumberValue v = (NumberValue) obj;
-                if (v instanceof IntegerValue) {
-                    if (v.getClass().getName().equals(INTVALUE_CLASSNAME)) {
-                        return (double) ((IntegerValue) v).getInt();
-                    }
-                    else if (v.getClass().getName().equals(LONGVALUE_CLASSNAME)) {
-                        return (double) ((IntegerValue) v).getLong();
-                    }
-                }
-                else {
-                    if (v.getClass().getName().equals(DOUBLEVALUE_CLASSNAME)) {
-                        return (double) ((FloatValue) v).doubleValue();
-                    }
-                    else if (v.getClass().getName().equals(FLOATVALUE_CLASSNAME)) {
-                        return (double) ((FloatValue) v).floatValue();
-                    }
-                }
-            }
-            else if (obj instanceof Number) { // java's Number type
-                return ((Number) obj).doubleValue();
-            }
-            else if (obj instanceof RawValue) { // msgpack's raw type
-                return Double.parseDouble(((RawValue) obj).getString());
-            }
-            else if (obj instanceof String) { // java's raw type
-                return Double.parseDouble((String) obj);
-            }
-        }
-        catch (Throwable t) {
-            e = t;
-        }
-
-        // implicit type conversion failed
-        String msg = String.format(
-                "Cannot convert column %d from value of %s class to double",
-                index, obj);
-        if (e != null) {
-            throw new SQLException(msg, e);
-        }
-        else {
-            throw new SQLException(msg);
-        }
+        return TypeConverter.convertToDouble(getValue(index));
     }
 
     public int getFetchDirection()
@@ -549,59 +379,7 @@ public abstract class TDResultSetBase
     private float getFloatWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        Throwable e = null;
-        Object obj = null;
-        try {
-            obj = getObject(index);
-
-            // if obj is null or NULL value (NilValue), it returns 0.0f.
-            if (obj == null || obj instanceof NilValue) {
-                return 0.0f;
-            }
-
-            if (obj instanceof NumberValue) { // msgpack's Number type
-                NumberValue v = (NumberValue) obj;
-                if (v instanceof IntegerValue) {
-                    if (v.getClass().getName().equals(INTVALUE_CLASSNAME)) {
-                        return (float) ((IntegerValue) v).getInt();
-                    }
-                    else if (v.getClass().getName().equals(LONGVALUE_CLASSNAME)) {
-                        return (float) ((IntegerValue) v).getLong();
-                    }
-                }
-                else {
-                    if (v.getClass().getName().equals(DOUBLEVALUE_CLASSNAME)) {
-                        return (float) ((FloatValue) v).doubleValue();
-                    }
-                    else if (v.getClass().getName().equals(FLOATVALUE_CLASSNAME)) {
-                        return (float) ((FloatValue) v).floatValue();
-                    }
-                }
-            }
-            else if (obj instanceof Number) { // java's Number type
-                return ((Number) obj).floatValue();
-            }
-            else if (obj instanceof RawValue) { // msgpack's raw type
-                return Float.parseFloat(((RawValue) obj).getString());
-            }
-            else if (obj instanceof String) { // java's raw type
-                return Float.parseFloat((String) obj);
-            }
-        }
-        catch (Throwable t) {
-            e = t;
-        }
-
-        // implicit type conversion failed
-        String msg = String.format(
-                "Cannot convert column %d from value of %s class to float",
-                index, obj);
-        if (e != null) {
-            throw new SQLException(msg, e);
-        }
-        else {
-            throw new SQLException(msg);
-        }
+        return TypeConverter.convertToFloat(getValue(index));
     }
 
     public int getHoldability()
@@ -622,61 +400,16 @@ public abstract class TDResultSetBase
         return getInt(findColumn(name));
     }
 
+    abstract protected Value getValue(int index);
+
     private int getIntWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        Throwable e = null;
-        Object obj = null;
         try {
-            obj = getObject(index);
-
-            // if obj is null or NULL value (NilValue), it returns 0.
-            if (obj == null || obj instanceof NilValue) {
-                return 0;
-            }
-
-            if (obj instanceof NumberValue) { // msgpack's Number type
-                NumberValue v = (NumberValue) obj;
-                if (v instanceof IntegerValue) {
-                    if (v.getClass().getName().equals(INTVALUE_CLASSNAME)) {
-                        return ((IntegerValue) v).getInt();
-                    }
-                    else if (v.getClass().getName().equals(LONGVALUE_CLASSNAME)) {
-                        return (int) ((IntegerValue) v).getLong();
-                    }
-                }
-                else {
-                    if (v.getClass().getName().equals(DOUBLEVALUE_CLASSNAME)) {
-                        return (int) ((FloatValue) v).doubleValue();
-                    }
-                    else if (v.getClass().getName().equals(FLOATVALUE_CLASSNAME)) {
-                        return (int) ((FloatValue) v).floatValue();
-                    }
-                }
-            }
-            else if (obj instanceof Number) { // java's Number type
-                return ((Number) obj).intValue();
-            }
-            else if (obj instanceof RawValue) { // msgpack's raw type
-                return Integer.parseInt(((RawValue) obj).getString());
-            }
-            else if (obj instanceof String) { // java's raw type
-                return Integer.parseInt((String) obj);
-            }
+            return TypeConverter.convertToInt(getValue(index));
         }
-        catch (Throwable t) {
-            e = t;
-        }
-
-        // implicit type conversion failed
-        String msg = String.format(
-                "Cannot convert column %d from value of %s class to integer",
-                index, obj);
-        if (e != null) {
-            throw new SQLException(msg, e);
-        }
-        else {
-            throw new SQLException(msg);
+        catch (MessageTypeException e) {
+            throw new SQLException(e);
         }
     }
 
@@ -695,58 +428,11 @@ public abstract class TDResultSetBase
     private long getLongWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        Throwable e = null;
-        Object obj = null;
         try {
-            obj = getObject(index);
-
-            // if obj is null or NULL value (NilValue), it returns 0.
-            if (obj == null || obj instanceof NilValue) {
-                return 0;
-            }
-
-            if (obj instanceof NumberValue) { // msgpack's Number type
-                NumberValue v = (NumberValue) obj;
-                if (v instanceof IntegerValue) {
-                    if (v.getClass().getName().equals(INTVALUE_CLASSNAME)) {
-                        return (long) ((IntegerValue) v).getInt();
-                    }
-                    else if (v.getClass().getName().equals(LONGVALUE_CLASSNAME)) {
-                        return (long) ((IntegerValue) v).getLong();
-                    }
-                }
-                else {
-                    if (v.getClass().getName().equals(DOUBLEVALUE_CLASSNAME)) {
-                        return (long) ((FloatValue) v).doubleValue();
-                    }
-                    else if (v.getClass().getName().equals(FLOATVALUE_CLASSNAME)) {
-                        return (long) ((FloatValue) v).floatValue();
-                    }
-                }
-            }
-            else if (obj instanceof Number) { // java's Number type
-                return ((Number) obj).longValue();
-            }
-            else if (obj instanceof RawValue) { // msgpack's raw type
-                return Long.parseLong(((RawValue) obj).getString());
-            }
-            else if (obj instanceof String) { // java's raw type
-                return Long.parseLong((String) obj);
-            }
+            return TypeConverter.convertToLong(getValue(index));
         }
-        catch (Throwable t) {
-            e = t;
-        }
-
-        // implicit type conversion failed
-        String msg = String.format(
-                "Cannot convert column %d from value of %s class to long",
-                index, obj);
-        if (e != null) {
-            throw new SQLException(msg, e);
-        }
-        else {
-            throw new SQLException(msg);
+        catch (MessageTypeException e) {
+            throw new SQLException(e);
         }
     }
 
@@ -855,59 +541,7 @@ public abstract class TDResultSetBase
     private short getShortWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        Throwable e = null;
-        Object obj = null;
-        try {
-            obj = getObject(index);
-
-            // if obj is null or NULL value (NilValue), it returns 0.
-            if (obj == null || obj instanceof NilValue) {
-                return 0;
-            }
-
-            if (obj instanceof NumberValue) { // msgpack's Number type
-                NumberValue v = (NumberValue) obj;
-                if (v instanceof IntegerValue) {
-                    if (v.getClass().getName().equals(INTVALUE_CLASSNAME)) {
-                        return (short) ((IntegerValue) v).getInt();
-                    }
-                    else if (v.getClass().getName().equals(LONGVALUE_CLASSNAME)) {
-                        return (short) ((IntegerValue) v).getLong();
-                    }
-                }
-                else {
-                    if (v.getClass().getName().equals(DOUBLEVALUE_CLASSNAME)) {
-                        return (short) ((FloatValue) v).doubleValue();
-                    }
-                    else if (v.getClass().getName().equals(FLOATVALUE_CLASSNAME)) {
-                        return (short) ((FloatValue) v).floatValue();
-                    }
-                }
-            }
-            else if (obj instanceof Number) { // java's Number type
-                return ((Number) obj).shortValue();
-            }
-            else if (obj instanceof RawValue) { // msgpack's raw type
-                return Short.parseShort(((RawValue) obj).getString());
-            }
-            else if (obj instanceof String) { // java's raw type
-                return Short.parseShort((String) obj);
-            }
-        }
-        catch (Throwable t) {
-            e = t;
-        }
-
-        // implicit type conversion failed
-        String msg = String.format(
-                "Cannot convert column %d from value of %s class to byte",
-                index, obj);
-        if (e != null) {
-            throw new SQLException(msg, e);
-        }
-        else {
-            throw new SQLException(msg);
-        }
+        return (short) TypeConverter.convertToInt(getValue(index));
     }
 
     void setStatement(TDStatementBase stat)
@@ -940,80 +574,7 @@ public abstract class TDResultSetBase
     public String getStringWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        Throwable e = null;
-        Object obj = null;
-        try {
-            obj = getObject(index);
-
-            // if obj is null or NULL value (NilValue), it returns null.
-            if (obj == null || obj instanceof NilValue) {
-                return null;
-            }
-
-            if (obj instanceof MapValue) { // msgpack's map type
-                return ((MapValue) obj).toString();
-            }
-            else if (obj instanceof ArrayValue) { // msgpack's array type
-                return ((ArrayValue) obj).toString();
-            }
-            else if (obj instanceof NumberValue) { // msgpack's number type
-                NumberValue v = (NumberValue) obj;
-                if (v instanceof IntegerValue) {
-                    if (v.getClass().getName().equals(INTVALUE_CLASSNAME)) {
-                        return "" + ((IntegerValue) v).getInt();
-                    }
-                    else if (v.getClass().getName().equals(LONGVALUE_CLASSNAME)) {
-                        return "" + ((IntegerValue) v).getLong();
-                    }
-                }
-                else {
-                    if (v.getClass().getName().equals(DOUBLEVALUE_CLASSNAME)) {
-                        return "" + ((FloatValue) v).doubleValue();
-                    }
-                    else if (v.getClass().getName().equals(FLOATVALUE_CLASSNAME)) {
-                        return "" + ((FloatValue) v).floatValue();
-                    }
-                }
-            }
-            else if (obj instanceof Number) { // java's number type
-                Number v = (Number) obj;
-                if (v instanceof Byte) {
-                    return "" + ((Byte) v).byteValue();
-                }
-                else if (v instanceof Double) {
-                    return "" + ((Double) v).doubleValue();
-                }
-                else if (v instanceof Float) {
-                    return "" + ((Float) v).floatValue();
-                }
-                else if (v instanceof Integer) {
-                    return "" + ((Integer) v).intValue();
-                }
-                else if (v instanceof Short) {
-                    return "" + ((Short) v).shortValue();
-                }
-            }
-            else if (obj instanceof RawValue) { // msgpack's raw type
-                return ((Value) obj).asRawValue().getString();
-            }
-            else { // java's raw type
-                return (String) obj;
-            }
-        }
-        catch (Throwable t) {
-            e = t;
-        }
-
-        // implicit type conversion failed
-        String msg = String.format(
-                "Cannot convert column %d from value of %s class to string",
-                index, obj);
-        if (e != null) {
-            throw new SQLException(msg, e);
-        }
-        else {
-            throw new SQLException(msg);
-        }
+        return getValue(index).toString();
     }
 
     public Time getTime(int columnIndex)
@@ -1043,29 +604,7 @@ public abstract class TDResultSetBase
     public Timestamp getTimestamp(int index)
             throws SQLException
     {
-        Object obj = getObject(index);
-
-        // if obj is NULL (NilValue), it returns null.
-        if (obj == null || obj instanceof NilValue) {
-            return null;
-        }
-
-        try {
-            String type = columnTypes.get(index - 1);
-            if (type.equalsIgnoreCase("timestamp")) {
-                return Timestamp.valueOf(((Value) obj).asRawValue().getString());
-            }
-            else {
-                throw new IllegalArgumentException(
-                        "Expected column to be a timestamp type but is " + type);
-            }
-        }
-        catch (Exception e) {
-            String msg = String.format(
-                    "Cannot convert column %d to date: %s",
-                    index, e.toString());
-            throw new SQLException(msg);
-        }
+        return TypeConverter.convertToTimestamp(getValue(index));
     }
 
     public Timestamp getTimestamp(String name)
