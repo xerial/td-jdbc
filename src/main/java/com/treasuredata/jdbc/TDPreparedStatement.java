@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 import static com.treasuredata.jdbc.TDJDBCException.UNSUPPORTED;
 
 public class TDPreparedStatement
-        extends TDStatement
+        extends OldTDStatement
         implements PreparedStatement
 {
     private static Logger LOG = Logger.getLogger(

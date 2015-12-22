@@ -26,10 +26,9 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 
-public abstract class TDStatementBase
+public abstract class OldTDStatementBase
         implements Statement
 {
-
     protected TDConnection conn;
 
     protected CommandExecutor exec;
@@ -52,7 +51,7 @@ public abstract class TDStatementBase
 
     private boolean isEscapeProcessing;
 
-    protected TDStatementBase(TDConnection conn)
+    protected OldTDStatementBase(TDConnection conn)
     {
         this.conn = conn;
         exec = new CommandExecutor(this.conn.getClientAPI());
@@ -163,7 +162,7 @@ public abstract class TDStatementBase
         if (max < 0) {
             throw new SQLException("max must be >= 0");
         }
-        maxRows = max;
+        maxRgows = max;
     }
 
     protected CommandContext fetchResult(String sql)

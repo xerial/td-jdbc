@@ -19,6 +19,7 @@
 package com.treasuredata.jdbc;
 
 import org.msgpack.core.MessageTypeException;
+import org.msgpack.value.ArrayValue;
 import org.msgpack.value.Value;
 
 import java.io.InputStream;
@@ -62,13 +63,13 @@ public abstract class TDResultSetBase
 
     protected boolean wasNull = false;
 
-    protected List<Object> row;
+    protected ArrayValue row;
 
     protected List<String> columnNames;
 
     protected List<String> columnTypes;
 
-    protected TDStatementBase statement = null;
+    protected OldTDStatementBase statement = null;
 
     public boolean absolute(int row)
             throws SQLException
@@ -400,7 +401,10 @@ public abstract class TDResultSetBase
         return getInt(findColumn(name));
     }
 
-    abstract protected Value getValue(int index);
+    protected Value getValue(int index)
+    {
+        return row.get(index);
+    }
 
     private int getIntWithImplicitTypeConversion(int index)
             throws SQLException
@@ -544,7 +548,7 @@ public abstract class TDResultSetBase
         return (short) TypeConverter.convertToInt(getValue(index));
     }
 
-    void setStatement(TDStatementBase stat)
+    void setStatement(OldTDStatementBase stat)
     {
         statement = stat;
     }

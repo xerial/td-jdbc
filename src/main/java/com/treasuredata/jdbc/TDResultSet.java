@@ -19,12 +19,15 @@
 package com.treasuredata.jdbc;
 
 import com.treasure_data.client.ClientException;
+import com.treasuredata.client.TDClient;
 import com.treasuredata.client.TDClientException;
+import com.treasuredata.client.model.TDJob;
 import com.treasuredata.client.model.TDJobSummary;
 import com.treasuredata.jdbc.command.ClientAPI;
 import com.treasure_data.model.Job;
 import com.treasure_data.model.JobSummary;
 import org.json.simple.JSONValue;
+import org.msgpack.core.MessageUnpacker;
 import org.msgpack.type.ArrayValue;
 import org.msgpack.type.Value;
 
@@ -53,29 +56,23 @@ public class TDResultSet
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private final TDClient client;
-
+    private final TDJob job;
     private int maxRows = 0;
+    private final int queryTimeout; // seconds
 
     private int rowsFetched = 0;
-
     private int fetchSize = 50;
 
-    private final int queryTimeout = 0; // seconds
+    private MessageUnpacker unpacker;
 
-    private ClientAPI.ExtUnpacker fetchedRows;
-
-    private Iterator<Value> fetchedRowsItr;
-
-    private Job job;
-
-    public TDResultSet(ClientAPI clientApi, int maxRows, Job job)
+    public TDResultSet(TDClient client, int maxRows, TDJob job)
     {
-        this(clientApi, maxRows, job, 0);
+        this(client, maxRows, job, 0);
     }
 
-    public TDResultSet(ClientAPI clientApi, int maxRows, Job job, int queryTimeout)
+    public TDResultSet(TDClient clientApi, int maxRows, TDJob job, int queryTimeout)
     {
-        this.clientApi = clientApi;
+        this.client = clientApi;
         this.maxRows = maxRows;
         this.job = job;
         this.queryTimeout = queryTimeout;
@@ -109,6 +106,8 @@ public class TDResultSet
     public void close()
             throws SQLException
     {
+
+
         if (fetchedRows != null) {
             try {
                 fetchedRows.getUnpacker().close();

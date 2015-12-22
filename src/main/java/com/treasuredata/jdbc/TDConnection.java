@@ -155,7 +155,7 @@ public class TDConnection implements Connection, Constants {
         throws SQLException {
         // *skip* checking if database is null or not. It is because
         // it was processed when creating a connection.
-        return new TDStatement(this);
+        return new OldTDStatement(this);
     }
 
     public Statement createStatement(int resultSetType, int resultSetConcurrency)
