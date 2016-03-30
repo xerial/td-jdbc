@@ -18,7 +18,7 @@
  */
 package com.treasuredata.jdbc.model;
 
-import com.treasuredata.jdbc.Utils;
+import com.treasuredata.jdbc.TDTypeConverter;
 
 import java.sql.SQLException;
 import java.sql.Types;
@@ -71,7 +71,7 @@ public class TDColumn
     public Integer getSqlType()
             throws SQLException
     {
-        return Utils.TDTypeToSqlType(type);
+        return TDTypeConverter.TDTypeToSqlType(type);
     }
 
     public static int columnDisplaySize(int columnType)
@@ -152,14 +152,14 @@ public class TDColumn
     public Integer getColumnSize()
             throws SQLException
     {
-        int precision = columnPrecision(Utils.TDTypeToSqlType(type));
+        int precision = columnPrecision(TDTypeConverter.TDTypeToSqlType(type));
         return precision == 0 ? null : precision;
     }
 
     public Integer getDecimalDigits()
             throws SQLException
     {
-        return columnScale(Utils.TDTypeToSqlType(type));
+        return columnScale(TDTypeConverter.TDTypeToSqlType(type));
     }
 
     public Integer getNumPrecRadix()

@@ -20,7 +20,7 @@ package com.treasuredata.jdbc.command;
 
 import com.treasure_data.client.ClientException;
 import com.treasuredata.jdbc.Constants;
-import com.treasuredata.jdbc.TDResultSetBase;
+import com.treasuredata.jdbc.OldTDResultSetBase;
 import org.msgpack.MessagePack;
 import org.msgpack.packer.Packer;
 import org.msgpack.type.ArrayValue;
@@ -74,7 +74,7 @@ public class CommandExecutor
     }
 
     public static class TDResultSetSelectOne
-            extends TDResultSetBase
+            extends OldTDResultSetBase
     {
         private ClientAPI api;
 

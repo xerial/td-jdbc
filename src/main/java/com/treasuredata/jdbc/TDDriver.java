@@ -18,6 +18,7 @@
  */
 package com.treasuredata.jdbc;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.treasuredata.client.TDClientConfig;
 import org.slf4j.Logger;
@@ -38,18 +39,22 @@ import java.util.Properties;
 public class TDDriver
         implements Driver
 {
+    public static String URL_PREFIX = "jdbc:td://";
+
     private static final Logger logger = LoggerFactory.getLogger(TDDriver.class);
     private static int majorVersion = 1;
     private static int minorVersion = 0;
 
+    @VisibleForTesting
+    static String pomProperties = "/META-INF/maven/com.treasuredata.jdbc/td-jdbc/pom.properties";
+
     static {
-        // Acquir major/minor version from Maven pom.properties
-        URL mavenProperties = TDDriver.class.getResource("/META-INF/maven/com.treasuredata.jdbc/td-jdbc/pom.properties");
-        Option<String> version = readMavenVersion(mavenProperties);
+        // Read major/minor versions
+        Option<String> version = readMavenVersion();
         if (version.isDefined()) {
             String v = version.get();
             logger.info("td-jdbc version: " + v);
-            String[] c = v.split("\\.");
+            String[] c = v.split("[\\._]");
             if (c.length > 0) {
                 majorVersion = safeParseInt(c[0], majorVersion);
             }
@@ -69,8 +74,10 @@ public class TDDriver
         }
     }
 
-    private static Option<String> readMavenVersion(URL mavenProperties)
+    private static Option<String> readMavenVersion()
     {
+        // Acquir td-jdbc version from Maven pom.properties
+        URL mavenProperties = TDDriver.class.getResource(pomProperties);
         if (mavenProperties != null) {
             InputStream in = null;
             try {
@@ -96,34 +103,38 @@ public class TDDriver
         return Option.empty();
     }
 
+    public TDDriver()
+    {
+    }
+
     @Override
     public Connection connect(String jdbcUrl, Properties properties)
             throws SQLException
     {
-        if(jdbcUrl == null) {
+        if (jdbcUrl == null) {
             throw new SQLException("jdbcUrl is null");
         }
-        if(properties == null)  {
+        if (properties == null) {
             throw new SQLException("jdbc properties are null");
         }
-        Config config = Config.parseJdbcURL(jdbcUrl).setProperties(properties);
+        JDBCConfig config = JDBCConfig.parseJdbcURL(jdbcUrl).setProperties(properties);
         return new TDConnection(config);
     }
 
     @Override
-    public boolean acceptsURL(String url)
+    public boolean acceptsURL(String jdbcUrl)
             throws SQLException
     {
-        if (url == null) {
-            throw new SQLException("Url is null");
+        if (jdbcUrl == null) {
+            throw new SQLException("jdbcUrl is null");
         }
 
         try {
-            Config.parseJdbcURL(url);
+            JDBCConfig.parseJdbcURL(jdbcUrl);
             return true;
         }
         catch (SQLException e) {
-            logger.debug("Invalid url: " + url, e);
+            logger.debug("Invalid url: " + jdbcUrl, e);
             return false;
         }
     }
@@ -156,14 +167,14 @@ public class TDDriver
     public DriverPropertyInfo[] getPropertyInfo(String jdbcUrl, Properties properties)
             throws SQLException
     {
-        Config config = Config.newConfig(jdbcUrl, properties);
+        JDBCConfig config = JDBCConfig.newConfig(jdbcUrl, properties == null ? new Properties() : properties);
 
         DriverPropertyBuilder builder = new DriverPropertyBuilder(config.toProperties());
         builder.add("apikey", "API key to access Treasure Data", false);
         builder.add("user", "User's account e-mail address", false);
         builder.add("password", "User's account password", false);
         builder.add("type", "Query engine type. Default is presto", false);
-        builder.add("useSSL", "Use ssl encription", false);
+        builder.add("useSSL", "Use ssl encryption", false);
         builder.add("host", "Host name of TD API", false);
         builder.add("httpproxyhost", "Proxy host", false);
         builder.add("httpproxyport", "Proxy port", false);
@@ -171,8 +182,8 @@ public class TDDriver
         builder.add("httpproxypassword", "Proxy password", false);
 
         // Add TDClient's configuration parameters
-        for(String p : TDClientConfig.knownProperties) {
-           builder.add(p, p, false);
+        for (String p : TDClientConfig.knownProperties) {
+            builder.add(p, p, false);
         }
 
         return builder.build();

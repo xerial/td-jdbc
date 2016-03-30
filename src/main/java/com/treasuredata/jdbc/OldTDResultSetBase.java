@@ -51,7 +51,7 @@ import static com.treasuredata.jdbc.TDJDBCException.UNSUPPORTED;
  * Data independed base class which implements the common part of all
  * resultsets.
  */
-public abstract class TDResultSetBase
+public abstract class OldTDResultSetBase
         implements ResultSet
 {
     private static final String INTVALUE_CLASSNAME = "org.msgpack.type.IntValueImpl";
@@ -230,7 +230,7 @@ public abstract class TDResultSetBase
     private boolean getBooleanWithTypeConversion(int index)
             throws SQLException
     {
-        return TypeConverter.convertToBoolean(getValue(index));
+        return TDTypeConverter.convertToBoolean(getValue(index));
     }
 
     public byte getByte(int index)
@@ -248,7 +248,7 @@ public abstract class TDResultSetBase
     private byte getByteWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        return (byte) TypeConverter.convertToInt(getValue(index));
+        return (byte) TDTypeConverter.convertToInt(getValue(index));
     }
 
     public byte[] getBytes(int columnIndex)
@@ -314,7 +314,7 @@ public abstract class TDResultSetBase
     public Date getDate(int index)
             throws SQLException
     {
-        return TypeConverter.convertToDate(getValue(index));
+        return TDTypeConverter.convertToDate(getValue(index));
     }
 
     public Date getDate(String columnName)
@@ -350,7 +350,7 @@ public abstract class TDResultSetBase
     private double getDoubleWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        return TypeConverter.convertToDouble(getValue(index));
+        return TDTypeConverter.convertToDouble(getValue(index));
     }
 
     public int getFetchDirection()
@@ -380,7 +380,7 @@ public abstract class TDResultSetBase
     private float getFloatWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        return TypeConverter.convertToFloat(getValue(index));
+        return TDTypeConverter.convertToFloat(getValue(index));
     }
 
     public int getHoldability()
@@ -410,7 +410,7 @@ public abstract class TDResultSetBase
             throws SQLException
     {
         try {
-            return TypeConverter.convertToInt(getValue(index));
+            return TDTypeConverter.convertToInt(getValue(index));
         }
         catch (MessageTypeException e) {
             throw new SQLException(e);
@@ -433,7 +433,7 @@ public abstract class TDResultSetBase
             throws SQLException
     {
         try {
-            return TypeConverter.convertToLong(getValue(index));
+            return TDTypeConverter.convertToLong(getValue(index));
         }
         catch (MessageTypeException e) {
             throw new SQLException(e);
@@ -545,7 +545,7 @@ public abstract class TDResultSetBase
     private short getShortWithImplicitTypeConversion(int index)
             throws SQLException
     {
-        return (short) TypeConverter.convertToInt(getValue(index));
+        return (short) TDTypeConverter.convertToInt(getValue(index));
     }
 
     void setStatement(OldTDStatementBase stat)
@@ -608,7 +608,7 @@ public abstract class TDResultSetBase
     public Timestamp getTimestamp(int index)
             throws SQLException
     {
-        return TypeConverter.convertToTimestamp(getValue(index));
+        return TDTypeConverter.convertToTimestamp(getValue(index));
     }
 
     public Timestamp getTimestamp(String name)

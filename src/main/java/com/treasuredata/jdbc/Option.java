@@ -18,6 +18,8 @@
  */
 package com.treasuredata.jdbc;
 
+import com.google.common.base.Function;
+
 /**
  * Optional value representation
  */
@@ -43,6 +45,16 @@ public final class Option<T>
         return isEmpty() ? defaultValue : get();
     }
 
+    public <U> Option<U> map(Function<T, U> f)
+    {
+        return isDefined() ? of(f.apply(get())) : Option.<U>empty();
+    }
+
+    public <U> Option<U> flatMap(Function<T, Option<U>> f)
+    {
+        return isDefined() ? f.apply(get()) : Option.<U>empty();
+    }
+
     public static <T> Option<T> of(T obj)
     {
         if (obj == null) {
@@ -57,4 +69,5 @@ public final class Option<T>
     {
         return (Option<T>) EMPTY;
     }
+
 }

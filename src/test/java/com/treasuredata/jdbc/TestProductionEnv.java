@@ -226,12 +226,12 @@ public class TestProductionEnv
         stat.execute("select nums from arraytest_str");
         ResultSet rs = stat.getResultSet();
         assertTrue(rs.next());
-        ArrayValue arr = (ArrayValue) rs.getObject(1);
-        logger.debug("getObject result: {}, type: {}", arr, arr.getClass());
-        for (int i = 0; i < arr.size(); ++i) {
-            int v = arr.get(i).asIntegerValue().getInt();
-            assertEquals(i + 1, v);
-        }
+//        ArrayValue arr = (ArrayValue) rs.getObject(1);
+//        logger.debug("getObject result: {}, type: {}", arr, arr.getClass());
+//        for (int i = 0; i < arr.size(); ++i) {
+//            int v = arr.get(i).asIntegerValue().getInt();
+//            assertEquals(i + 1, v);
+//        }
         assertFalse(rs.next());
         rs.close();
         stat.close();

@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -48,10 +47,10 @@ import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class TDResultSet
-        extends TDResultSetBase
+public class OldTDResultSet
+        extends OldTDResultSetBase
 {
-    private static Logger LOG = Logger.getLogger(TDResultSet.class.getName());
+    private static Logger LOG = Logger.getLogger(OldTDResultSet.class.getName());
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -65,12 +64,12 @@ public class TDResultSet
 
     private MessageUnpacker unpacker;
 
-    public TDResultSet(TDClient client, int maxRows, TDJob job)
+    public OldTDResultSet(TDClient client, int maxRows, TDJob job)
     {
         this(client, maxRows, job, 0);
     }
 
-    public TDResultSet(TDClient clientApi, int maxRows, TDJob job, int queryTimeout)
+    public OldTDResultSet(TDClient clientApi, int maxRows, TDJob job, int queryTimeout)
     {
         this.client = clientApi;
         this.maxRows = maxRows;

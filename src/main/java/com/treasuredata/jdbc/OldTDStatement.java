@@ -86,7 +86,7 @@ public class OldTDStatement
             throws SQLException
     {
         fetchResult(sql);
-        TDResultSetBase rs = getResultSet();
+        OldTDResultSetBase rs = getResultSet();
         return rs;
     }
 

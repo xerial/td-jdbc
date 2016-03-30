@@ -211,9 +211,6 @@ public interface Constants
     int RESULT_EXECDIRECT = 0;
 
     // The required prefix for the connection URL and URI.
-    String URL_PREFIX = "jdbc:td://";
-    String URL_PREFIX0 = "jdbc:td:";
-    String URI_PREFIX = URL_PREFIX;
     String DEFAULT_PORT = "80"; // If host is provided, without a port.
 
     String DBNAME_PROPERTY_KEY = "DBNAME"; // Property key for the database name.
@@ -231,19 +228,6 @@ public interface Constants
     int MAX_COLUMNS_IN_TABLE = 512;
 
 
-    String TD_JDBC_RESULT_RETRYCOUNT_THRESHOLD = "td.jdbc.result.retrycount.threshold";
-    int TD_JDBC_RESULT_RETRYCOUNT_THRESHOLD_DEFAULTVALUE = 0;
-
-    String TD_JDBC_RESULT_RETRY_WAITTIME = "td.jdbc.result.retry.waittime";
-    long TD_JDBC_RESULT_RETRY_WAITTIME_DEFAULTVALUE = (20 * 1000); // millis
-
-    // JDBC compliance
-    boolean JDBC_COMPLIANT = false;
-
-    // jdbc version
-    int JDBC_MAJOR_VERSION = 3;
-    int JDBC_MINOR_VERSION = 0;
-
     // database version
     // we define hive version as database version
     int DATABASE_MAJOR_VERSION = 0;
@@ -251,11 +235,4 @@ public interface Constants
     int DATABASE_REVISION = 1;
     String DATABASE_FULL_VERSION = DATABASE_MAJOR_VERSION + "." + DATABASE_MINOR_VERSION + "." + DATABASE_REVISION;
     String DATABASE_NAME = "Treasure Data Storage Engine";
-
-    // driver version
-    int DRIVER_MAJOR_VERSION = 0;
-    int DRIVER_MINOR_VERSION = 4;
-    int DRIVER_REVISION = 0;
-    String DRIVER_FULL_VERSION = DRIVER_MAJOR_VERSION + "." + DRIVER_MINOR_VERSION + "." + DRIVER_REVISION;
-    String DRIVER_NAME = TreasureDataDriver.class.getName();
 }

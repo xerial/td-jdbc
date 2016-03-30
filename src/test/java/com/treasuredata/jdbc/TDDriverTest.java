@@ -22,28 +22,57 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Driver;
+import java.sql.DriverPropertyInfo;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *
  */
 public class TDDriverTest
 {
+    private static void setVersion(String v)
+            throws IOException
+    {
+        File pomPropFile = new File("target/test-classes", TDDriver.pomProperties.substring(1));
+        Properties p = new Properties();
+        p.setProperty("version", v);
+        p.store(new FileWriter(pomPropFile), "");
+    }
+
     @Test
     public void versionCheck()
             throws Exception
     {
         // Prepare version file in the class path
-        File pomPropFile = new File("target/test-classes", TDDriver.pomProperties.substring(1));
-        Properties p = new Properties();
-        p.setProperty("version", "2.10.1");
-        p.store(new FileWriter(pomPropFile), "");
-
+        setVersion("2.10");
         Driver driver = new TDDriver();
         assertEquals(2, driver.getMajorVersion());
         assertEquals(10, driver.getMinorVersion());
+    }
+
+    @Test
+    public void readInavlidVersion()
+            throws Exception
+    {
+        // Use invalid version
+        setVersion("4.30a-1");
+        Driver driver = new TDDriver();
+        assertEquals(4, driver.getMajorVersion());
+        assertEquals(0, driver.getMinorVersion());
+    }
+
+    @Test
+    public void propertyInfo()
+            throws SQLException
+    {
+        Driver driver = new TDDriver();
+        DriverPropertyInfo[] pi = driver.getPropertyInfo("jdbc://api.treasuredata.com", null);
+        assertNotNull(pi);
     }
 }

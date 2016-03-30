@@ -22,6 +22,6 @@ package com.treasure_data.jdbc;
  *
  */
 public class TreasureDataDriver
-        extends com.treasuredata.jdbc.TreasureDataDriver
+        extends com.treasuredata.jdbc.TDDriver
 {
 }

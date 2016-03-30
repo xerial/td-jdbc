@@ -85,13 +85,13 @@ public class TestTDResultSetBase
             return false;
         }
 
-        public TDResultSetBase select(String sql)
+        public OldTDResultSetBase select(String sql)
                 throws ClientException
         {
             return null;
         }
 
-        public TDResultSetBase select(String sql, int queryTimeout)
+        public OldTDResultSetBase select(String sql, int queryTimeout)
                 throws ClientException
         {
             return null;
@@ -293,7 +293,7 @@ public class TestTDResultSetBase
             int src = values[i];
             ClientAPI clientApi = new MockIntegerClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             assertEquals((byte) src, rs.getByte(1)); // to byte type
@@ -321,7 +321,7 @@ public class TestTDResultSetBase
             long src = values[i];
             ClientAPI clientApi = new MockLongClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             assertEquals((byte) src, rs.getByte(1)); // to byte type
@@ -351,7 +351,7 @@ public class TestTDResultSetBase
             double src = values[i];
             ClientAPI clientApi = new MockDoubleClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             assertEquals((byte) src, rs.getByte(1)); // to byte type
@@ -379,7 +379,7 @@ public class TestTDResultSetBase
             String src = "0";
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             assertEquals((byte) Byte.parseByte(src), rs.getByte(1)); // to byte
@@ -402,7 +402,7 @@ public class TestTDResultSetBase
             String src = "0.0";
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -446,7 +446,7 @@ public class TestTDResultSetBase
             String src = "0.0";
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -490,7 +490,7 @@ public class TestTDResultSetBase
             String src = "1";
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             assertEquals((byte) Byte.parseByte(src), rs.getByte(1)); // to byte
@@ -513,7 +513,7 @@ public class TestTDResultSetBase
             String src = "0.0";
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -557,7 +557,7 @@ public class TestTDResultSetBase
             String src = "-1";
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             assertEquals((byte) Byte.parseByte(src), rs.getByte(1)); // to byte
@@ -580,7 +580,7 @@ public class TestTDResultSetBase
             String src = "-1.0";
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -624,7 +624,7 @@ public class TestTDResultSetBase
             String src = "" + Byte.MAX_VALUE;
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             assertEquals((byte) Byte.parseByte(src), rs.getByte(1)); // to byte
@@ -647,7 +647,7 @@ public class TestTDResultSetBase
             String src = "" + Byte.MIN_VALUE;
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             assertEquals((byte) Byte.parseByte(src), rs.getByte(1)); // to byte
@@ -670,7 +670,7 @@ public class TestTDResultSetBase
             String src = "" + Short.MAX_VALUE;
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -698,7 +698,7 @@ public class TestTDResultSetBase
             String src = "" + Short.MIN_VALUE;
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -726,7 +726,7 @@ public class TestTDResultSetBase
             String src = "" + Integer.MIN_VALUE;
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -758,7 +758,7 @@ public class TestTDResultSetBase
             String src = "" + Integer.MIN_VALUE;
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -790,7 +790,7 @@ public class TestTDResultSetBase
             String src = "" + Long.MAX_VALUE;
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -827,7 +827,7 @@ public class TestTDResultSetBase
             String src = "" + Long.MIN_VALUE;
             ClientAPI clientApi = new MockStringClientAPI(src);
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
 
             try {
@@ -872,7 +872,7 @@ public class TestTDResultSetBase
         { // "true"
             ClientAPI clientApi = new MockStringClientAPI("true");
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
             // to boolean type
             assertTrue(rs.getBoolean(1));
@@ -883,7 +883,7 @@ public class TestTDResultSetBase
         { // "false"
             ClientAPI clientApi = new MockStringClientAPI("false");
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
             // to boolean type
             assertTrue(!rs.getBoolean(1));
@@ -894,7 +894,7 @@ public class TestTDResultSetBase
         { // "muga"
             ClientAPI clientApi = new MockStringClientAPI("muga");
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
             // to boolean type
             assertTrue(rs.getBoolean(1));

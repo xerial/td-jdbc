@@ -20,10 +20,10 @@ package com.treasuredata.jdbc.command;
 
 import com.treasure_data.client.ClientException;
 import com.treasure_data.client.TreasureDataClient;
-import com.treasuredata.jdbc.Config;
+import com.treasuredata.jdbc.JDBCConfig;
 import com.treasuredata.jdbc.TDConnection;
-import com.treasuredata.jdbc.TDResultSet;
-import com.treasuredata.jdbc.TDResultSetBase;
+import com.treasuredata.jdbc.OldTDResultSet;
+import com.treasuredata.jdbc.OldTDResultSetBase;
 import com.treasuredata.jdbc.TDResultSetMetaData;
 import com.treasure_data.model.AuthenticateRequest;
 import com.treasure_data.model.Database;
@@ -63,7 +63,7 @@ public class TDClientAPI
             .getName());
 
     private final TreasureDataClient client;
-    private final Config config;
+    private final JDBCConfig config;
 
     private final Database database;
 
@@ -75,13 +75,13 @@ public class TDClientAPI
         this(conn.getConfig(), new TreasureDataClient(conn.getConfig().toProperties()), conn.getDatabase(), conn.getMaxRows());
     }
 
-    TDClientAPI(Config config, TreasureDataClient client, Database database)
+    TDClientAPI(JDBCConfig config, TreasureDataClient client, Database database)
         throws SQLException
     {
         this(config, client, database, 5000);
     }
 
-    TDClientAPI(Config config, TreasureDataClient client, Database database, int maxRows)
+    TDClientAPI(JDBCConfig config, TreasureDataClient client, Database database, int maxRows)
             throws SQLException
     {
         this.config = config;
@@ -147,16 +147,16 @@ public class TDClientAPI
         return true;
     }
 
-    public TDResultSetBase select(String sql)
+    public OldTDResultSetBase select(String sql)
             throws ClientException
     {
         return select(sql, 0);
     }
 
-    public TDResultSetBase select(String sql, int queryTimeout)
+    public OldTDResultSetBase select(String sql, int queryTimeout)
             throws ClientException
     {
-        TDResultSetBase rs = null;
+        OldTDResultSetBase rs = null;
 
         Job job = new Job(database, config.type, sql, null);
         SubmitJobRequest request = new SubmitJobRequest(job);
@@ -164,7 +164,7 @@ public class TDClientAPI
         job = result.getJob();
 
         if (job != null) {
-            rs = new TDResultSet(this, maxRows, job, queryTimeout);
+            rs = new OldTDResultSet(this, maxRows, job, queryTimeout);
         }
         return rs;
     }

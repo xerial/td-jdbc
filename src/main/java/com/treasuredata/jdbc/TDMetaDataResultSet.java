@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TDMetaDataResultSet<M>
-        extends TDResultSetBase
+        extends OldTDResultSetBase
 {
     protected final List<M> data;
 

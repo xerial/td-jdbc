@@ -26,23 +26,19 @@ public class ConfigBuilder
 {
     private String url;
     private String database = "default";
-    private String user;
-    private String password;
     private TDJob.Type type = TDJob.Type.PRESTO; // Use presto by default
     private ApiConfig apiConfig;
-    private int resultRetryCountThreshold = Config.TD_JDBC_RESULT_RETRYCOUNT_THRESHOLD_DEFAULTVALUE;
-    private long resultRetryWaitTimeMs = Config.TD_JDBC_RESULT_RETRY_WAITTIME_DEFAULTVALUE;
+    private int resultRetryCountThreshold = JDBCConfig.TD_JDBC_RESULT_RETRYCOUNT_THRESHOLD_DEFAULTVALUE;
+    private long resultRetryWaitTimeMs = JDBCConfig.TD_JDBC_RESULT_RETRY_WAITTIME_DEFAULTVALUE;
 
     public ConfigBuilder()
     {
     }
 
-    public ConfigBuilder(Config config)
+    public ConfigBuilder(JDBCConfig config)
     {
         this.url = config.url;
         this.database = config.database;
-        this.user = config.user;
-        this.password = config.password;
         this.type = config.type;
         this.apiConfig = config.apiConfig;
         this.resultRetryCountThreshold = config.resultRetryCountThreshold;
@@ -101,10 +97,10 @@ public class ConfigBuilder
         return this;
     }
 
-    public Config createConnectionConfig()
+    public JDBCConfig createConnectionConfig()
             throws SQLException
     {
-        return new Config(url,
+        return new JDBCConfig(url,
                 database,
                 user,
                 password,

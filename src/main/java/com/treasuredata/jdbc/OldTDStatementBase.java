@@ -35,7 +35,7 @@ public abstract class OldTDStatementBase
 
     protected int queryTimeout = -1; // seconds
 
-    protected TDResultSetBase currentResultSet = null;
+    protected OldTDResultSetBase currentResultSet = null;
 
     protected int maxRows = 0;
 
@@ -85,7 +85,7 @@ public abstract class OldTDStatementBase
         }
     }
 
-    public TDResultSetBase getResultSet()
+    public OldTDResultSetBase getResultSet()
             throws SQLException
     {
         if (currentResultSet != null) {

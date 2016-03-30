@@ -18,7 +18,7 @@
  */
 package com.treasuredata.jdbc.command;
 
-import com.treasuredata.jdbc.TDResultSetBase;
+import com.treasuredata.jdbc.OldTDResultSetBase;
 
 public class CommandContext
 {
@@ -27,7 +27,7 @@ public class CommandContext
 
     public String sql;
 
-    public TDResultSetBase resultSet;
+    public OldTDResultSetBase resultSet;
 
     public CommandContext()
     {

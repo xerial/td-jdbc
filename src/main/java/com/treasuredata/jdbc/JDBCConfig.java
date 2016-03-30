@@ -19,17 +19,19 @@
 package com.treasuredata.jdbc;
 
 
+import com.google.common.collect.ImmutableMap;
+import com.treasuredata.client.TDClientBuilder;
 import com.treasuredata.client.TDClientConfig;
 import com.treasuredata.client.model.TDJob;
 
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Properties;
 
 /**
  * JDBC connection configuration
  */
-public class Config
-        implements Constants
+public class JDBCConfig
 {
     public static final String TD_JDBC_USESSL = "usessl";
     public static final String TD_JDBC_USER = "user";
@@ -41,59 +43,55 @@ public class Config
     public static final String TD_JDBC_PROXY_USER = "httpproxyuser";
     public static final String TD_JDBC_PROXY_PASSWORD = "httpproxypassword";
 
+    // Mapping from jdbc properties to td-client ones
+    static Map<String, String> jdbcToClientConfigMapping;
+    static {
+        ImmutableMap.Builder<String, String> b = ImmutableMap.builder();
+        b.put(TD_JDBC_USESSL, TDClientConfig.TD_CLIENT_USESSL);
+        b.put(TD_JDBC_USER, TDClientConfig.TD_CLIENT_USER);
+        b.put(TD_JDBC_PASSWORD, TDClientConfig.TD_CLIENT_PASSOWRD);
+        b.put(TD_JDBC_APIKEY, TDClientConfig.TD_CLIENT_APIKEY);
+        b.put(TD_JDBC_PROXY_HOST, TDClientConfig.TD_CLIENT_PROXY_HOST);
+        b.put(TD_JDBC_PROXY_PORT, TDClientConfig.TD_CLIENT_PROXY_PORT);
+        b.put(TD_JDBC_PROXY_USER, TDClientConfig.TD_CLIENT_PROXY_USER);
+        b.put(TD_JDBC_PROXY_PASSWORD, TDClientConfig.TD_CLIENT_PROXY_PASSWORD);
+        jdbcToClientConfigMapping = b.build();
+    }
 
     // TD JDBC Configuration
     public final String url;
     public final String database;
-    public final String user;
-    public final String password;
     public final TDJob.Type type;
-    public final ApiConfig apiConfig;
-    public final int resultRetryCountThreshold;
-    public final long resultRetryWaitTimeMs;
+    public final TDClientConfig clientConfig;
 
-    public Config(
+    public JDBCConfig(
             String url,
             String database,
-            String user,
-            String password,
             TDJob.Type type,
-            ApiConfig apiConfig,
-            int resultRetryCountThreshold,
-            long resultRetryWaitTimeMs
+            TDClientConfig clientConfig
     )
             throws SQLException
     {
         this.url = url;
         this.database = database;
-        this.user = user;
-        this.password = password;
         if (type == null || !(type.equals(TDJob.Type.HIVE) || type.equals(TDJob.Type.PRESTO))) {
             throw new SQLException("invalid job type within URL: " + type);
         }
         this.type = type;
-        this.apiConfig = apiConfig;
-        this.resultRetryCountThreshold = resultRetryCountThreshold;
-        this.resultRetryWaitTimeMs = resultRetryWaitTimeMs;
+        this.clientConfig = clientConfig;
     }
 
     public Properties toProperties() {
         Properties prop = new Properties();
-        if(user != null) {
-            prop.setProperty(TD_JDBC_USER, user);
-        }
-        if(password != null) {
-            prop.setProperty(TD_JDBC_PASSWORD, password);
-        }
         prop.setProperty(TD_JDBC_JOB_TYPE, type.getType());
-        prop.putAll(apiConfig.toProperties());
+        prop.putAll(clientConfig.toProperties());
         return prop;
     }
 
     public static void validateJDBCUrl(String url)
             throws SQLException
     {
-        if (url == null || url.isEmpty() || !url.startsWith(URL_PREFIX)) {
+        if (url == null || url.isEmpty() || !url.startsWith(TDDriver.URL_PREFIX)) {
             throw new SQLException("Invalid JDBC URL: " + url + ". URL prefix must be jdbc:td://");
         }
     }
@@ -129,7 +127,7 @@ public class Config
      * @return connection configuration
      * @throws SQLException
      */
-    public static Config newConfig(String jdbcUrl, Properties props)
+    public static JDBCConfig newConfig(String jdbcUrl, Properties props)
             throws SQLException {
         return parseJdbcURL(jdbcUrl).setProperties(props);
     }
@@ -142,24 +140,23 @@ public class Config
      *  endpoint
      *
      */
-    public static Config parseJdbcURL(String jdbcUrl)
+    public static JDBCConfig parseJdbcURL(String jdbcUrl)
             throws SQLException
     {
         validateJDBCUrl(jdbcUrl);
 
         ConfigBuilder config = new ConfigBuilder();
-        boolean hasProxyConfig = false;
-        ProxyConfig.ProxyConfigBuilder proxyConfig = new ProxyConfig.ProxyConfigBuilder();
-        ApiConfig.ApiConfigBuilder apiConfig = new ApiConfig.ApiConfigBuilder();
-
         config.setUrl(jdbcUrl);
+
+        TDClientBuilder clientConfig = new TDClientBuilder(false);
+
         int postUrlPos = jdbcUrl.length();
         // postUrlPos is the END position in url String,
         // wrt what remains to be processed.
         // i.e., if postUrlPos is 100, url no longer needs to examined at
         // index 100 or later.
 
-        int semiPos = jdbcUrl.indexOf(';', URL_PREFIX.length());
+        int semiPos = jdbcUrl.indexOf(';', TDDriver.URL_PREFIX.length());
         if (semiPos < 0) {
             semiPos = postUrlPos;
         }
@@ -270,7 +267,7 @@ public class Config
      * @return
      * @throws SQLException
      */
-    public Config setProperties(Properties props) throws SQLException {
+    public JDBCConfig setProperties(Properties props) throws SQLException {
 
         ConfigBuilder config = new ConfigBuilder(this);
         ApiConfig.ApiConfigBuilder apiConfig = new ApiConfig.ApiConfigBuilder(this.apiConfig);
@@ -344,25 +341,25 @@ public class Config
             apiConfig.unsetApiKey();
         }
 
-        // retry settings
-        String retryCountThreshold = getJDBCProperty(props, TD_JDBC_RESULT_RETRYCOUNT_THRESHOLD);
-        if(retryCountThreshold != null) {
-            try {
-                config.setResultRetryCountThreshold(Integer.parseInt(retryCountThreshold));
-            }
-            catch (NumberFormatException e) {
-                throw new SQLException("Invalid value for td.jdbc.result.retrycount.threshold: " + retryCountThreshold);
-            }
-        }
-        String retryWaitTimeMs = getJDBCProperty(props, TD_JDBC_RESULT_RETRY_WAITTIME);
-        if(retryWaitTimeMs != null) {
-            try {
-                config.setResultRetryWaitTimeMs(Long.parseLong(retryWaitTimeMs));
-            }
-            catch (NumberFormatException e) {
-                throw new SQLException("Invalid value for td.jdbc.result.retry.waittime: " + retryWaitTimeMs);
-            }
-        }
+//        // retry settings
+//        String retryCountThreshold = getJDBCProperty(props, TD_JDBC_RESULT_RETRYCOUNT_THRESHOLD);
+//        if(retryCountThreshold != null) {
+//            try {
+//                config.setResultRetryCountThreshold(Integer.parseInt(retryCountThreshold));
+//            }
+//            catch (NumberFormatException e) {
+//                throw new SQLException("Invalid value for td.jdbc.result.retrycount.threshold: " + retryCountThreshold);
+//            }
+//        }
+//        String retryWaitTimeMs = getJDBCProperty(props, TD_JDBC_RESULT_RETRY_WAITTIME);
+//        if(retryWaitTimeMs != null) {
+//            try {
+//                config.setResultRetryWaitTimeMs(Long.parseLong(retryWaitTimeMs));
+//            }
+//            catch (NumberFormatException e) {
+//                throw new SQLException("Invalid value for td.jdbc.result.retry.waittime: " + retryWaitTimeMs);
+//            }
+//        }
 
         // proxy settings: host and port are supported by Java runtime.
         // http.proxyUser and http.proxyPassword are no longer supported but

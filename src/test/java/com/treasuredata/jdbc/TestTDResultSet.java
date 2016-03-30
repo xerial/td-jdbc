@@ -87,13 +87,13 @@ public class TestTDResultSet
             return false;
         }
 
-        public TDResultSetBase select(String sql)
+        public OldTDResultSetBase select(String sql)
                 throws ClientException
         {
             return null;
         }
 
-        public TDResultSetBase select(String sql, int queryTimeout)
+        public OldTDResultSetBase select(String sql, int queryTimeout)
                 throws ClientException
         {
             return null;
@@ -174,7 +174,7 @@ public class TestTDResultSet
                 }
             };
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
             assertEquals(1, rs.getInt(1));
             assertEquals("muga", rs.getString(2));
@@ -220,7 +220,7 @@ public class TestTDResultSet
                 }
             };
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job, queryTimeout);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job, queryTimeout);
             assertTrue(rs.next());
             assertEquals(1, rs.getInt(1));
             assertEquals("muga", rs.getString(2));
@@ -266,7 +266,7 @@ public class TestTDResultSet
                 }
             };
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job, queryTimeout);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job, queryTimeout);
             assertTrue(rs.next());
             assertEquals(1, rs.getInt(1));
             assertEquals("muga", rs.getString(2));
@@ -325,7 +325,7 @@ public class TestTDResultSet
             };
             Job job = new Job("12345");
             try {
-                ResultSet rs = new TDResultSet(clientApi, 50, job, queryTimeout);
+                ResultSet rs = new OldTDResultSet(clientApi, 50, job, queryTimeout);
                 rs.next();
                 fail();
             }
@@ -378,7 +378,7 @@ public class TestTDResultSet
                 }
             };
             Job job = new Job("12345");
-            ResultSet rs = new TDResultSet(clientApi, 50, job);
+            ResultSet rs = new OldTDResultSet(clientApi, 50, job);
             assertTrue(rs.next());
             assertEquals(1, rs.getInt(1));
             assertEquals("muga", rs.getString(2));
@@ -427,7 +427,7 @@ public class TestTDResultSet
             }
         };
         Job job = new Job("12345");
-        ResultSet rs = new TDResultSet(clientApi, 50, job);
+        ResultSet rs = new OldTDResultSet(clientApi, 50, job);
         assertTrue(rs.next());
         assertEquals(1, rs.getInt(1));
         assertEquals("muga", rs.getString(2));
@@ -471,7 +471,7 @@ public class TestTDResultSet
             }
         };
         Job job = new Job("12345");
-        ResultSet rs = new TDResultSet(clientApi, 50, job);
+        ResultSet rs = new OldTDResultSet(clientApi, 50, job);
         assertTrue(rs.next());
         { // ok: int to int
             assertEquals(10, rs.getInt(1));
@@ -525,7 +525,7 @@ public class TestTDResultSet
         };
 
         Job job = new Job("12345");
-        ResultSet rs = new TDResultSet(clientApi, 100, job);
+        ResultSet rs = new OldTDResultSet(clientApi, 100, job);
         for (int i = 0; i < count; i++) {
             assertTrue(rs.next());
             assertEquals("p1:" + i, rs.getString(1));
@@ -550,7 +550,7 @@ public class TestTDResultSet
             }
         };
         Job job = new Job("12345");
-        TDResultSet rs = new TDResultSet(clientApi, 50, job);
+        OldTDResultSet rs = new OldTDResultSet(clientApi, 50, job);
         ResultSetMetaData rsMetaData = rs.getMetaData();
         { // getColumnType(int)
             try {
@@ -560,13 +560,13 @@ public class TestTDResultSet
             catch (Throwable t) {
                 assertTrue(t instanceof SQLException);
             }
-            assertEquals(Utils.TDTypeToSqlType(Constants.STRING_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.STRING_TYPE_NAME),
                     rsMetaData.getColumnType(1));
-            assertEquals(Utils.TDTypeToSqlType(Constants.FLOAT_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.FLOAT_TYPE_NAME),
                     rsMetaData.getColumnType(2));
-            assertEquals(Utils.TDTypeToSqlType(Constants.DOUBLE_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.DOUBLE_TYPE_NAME),
                     rsMetaData.getColumnType(3));
-            assertEquals(Utils.TDTypeToSqlType(Constants.BOOLEAN_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.BOOLEAN_TYPE_NAME),
                     rsMetaData.getColumnType(4));
             try {
                 rsMetaData.getColumnType(5);
@@ -637,7 +637,7 @@ public class TestTDResultSet
             }
         };
         Job job = new Job("12345");
-        TDResultSet rs = new TDResultSet(clientApi, 50, job);
+        OldTDResultSet rs = new OldTDResultSet(clientApi, 50, job);
         ResultSetMetaData rsMetaData = rs.getMetaData();
         { // getColumnType(int)
             try {
@@ -647,13 +647,13 @@ public class TestTDResultSet
             catch (Throwable t) {
                 assertTrue(t instanceof SQLException);
             }
-            assertEquals(Utils.TDTypeToSqlType(Constants.TINYINT_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.TINYINT_TYPE_NAME),
                     rsMetaData.getColumnType(1));
-            assertEquals(Utils.TDTypeToSqlType(Constants.SMALLINT_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.SMALLINT_TYPE_NAME),
                     rsMetaData.getColumnType(2));
-            assertEquals(Utils.TDTypeToSqlType(Constants.INT_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.INT_TYPE_NAME),
                     rsMetaData.getColumnType(3));
-            assertEquals(Utils.TDTypeToSqlType(Constants.BIGINT_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.BIGINT_TYPE_NAME),
                     rsMetaData.getColumnType(4));
             try {
                 rsMetaData.getColumnType(5);
@@ -724,7 +724,7 @@ public class TestTDResultSet
             }
         };
         Job job = new Job("12345");
-        TDResultSet rs = new TDResultSet(clientApi, 50, job);
+        OldTDResultSet rs = new OldTDResultSet(clientApi, 50, job);
         ResultSetMetaData rsMetaData = rs.getMetaData();
         { // getColumnType(int)
             try {
@@ -734,11 +734,11 @@ public class TestTDResultSet
             catch (Throwable t) {
                 assertTrue(t instanceof SQLException);
             }
-            assertEquals(Utils.TDTypeToSqlType(Constants.STRING_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.STRING_TYPE_NAME),
                     rsMetaData.getColumnType(1));
-            assertEquals(Utils.TDTypeToSqlType(Constants.STRING_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.STRING_TYPE_NAME),
                     rsMetaData.getColumnType(2));
-            assertEquals(Utils.TDTypeToSqlType(Constants.STRING_TYPE_NAME),
+            assertEquals(TDTypeConverter.TDTypeToSqlType(Constants.STRING_TYPE_NAME),
                     rsMetaData.getColumnType(3));
             try {
                 rsMetaData.getColumnType(4);

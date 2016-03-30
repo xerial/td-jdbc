@@ -33,7 +33,7 @@ public class TestConfig
             throws Exception
     {
         final String url = "jdbc:td://host01:9999/db01;user=user01;password=pass01;k01=v01;k02=v02";
-        Config config = Config.parseJdbcURL(url);
+        JDBCConfig config = JDBCConfig.parseJdbcURL(url);
         assertEquals(url, config.url);
         assertEquals("host01", config.apiConfig.endpoint);
         assertEquals(9999, config.apiConfig.port);
@@ -48,7 +48,7 @@ public class TestConfig
     {
         final String url = "jdbc:td://";
         try {
-            Config.parseJdbcURL(url);
+            JDBCConfig.parseJdbcURL(url);
             fail();
         }
         catch (Throwable t) {
@@ -62,7 +62,7 @@ public class TestConfig
     {
         final String url = "odbc:td://host01:9999/db01;user=user01;password=pass01;k01=v01;k02=v02";
         try {
-            Config.parseJdbcURL(url);
+            JDBCConfig.parseJdbcURL(url);
             fail();
         }
         catch (Throwable t) {
@@ -75,7 +75,7 @@ public class TestConfig
             throws Exception
     {
         final String url = "jdbc:td://:9999/db01;user=user01;password=pass01;k01=v01;k02=v02";
-        Config config = Config.parseJdbcURL(url);
+        JDBCConfig config = JDBCConfig.parseJdbcURL(url);
         assertEquals(url, config.url);
         assertEquals("api.treasuredata.com", config.apiConfig.endpoint);
         assertEquals(9999, config.apiConfig.port);
@@ -89,7 +89,7 @@ public class TestConfig
             throws Exception
     {
         final String url = "jdbc:td://host01/db01;user=user01;password=pass01;k01=v01;k02=v02";
-        Config config = Config.parseJdbcURL(url);
+        JDBCConfig config = JDBCConfig.parseJdbcURL(url);
         assertEquals(url, config.url);
         assertEquals("host01", config.apiConfig.endpoint);
         assertEquals(80, config.apiConfig.port);
@@ -105,7 +105,7 @@ public class TestConfig
         {
             final String url = "jdbc:td://host01:/db01;user=user01;password=pass01;k01=v01;k02=v02";
             try {
-                Config.parseJdbcURL(url);
+                JDBCConfig.parseJdbcURL(url);
                 fail();
             }
             catch (Throwable t) {
@@ -115,7 +115,7 @@ public class TestConfig
         {
             final String url = "jdbc:td://host01:str/db01;user=user01;password=pass01;k01=v01;k02=v02";
             try {
-                Config.parseJdbcURL(url);
+                JDBCConfig.parseJdbcURL(url);
                 fail();
             }
             catch (Throwable t) {
@@ -129,7 +129,7 @@ public class TestConfig
             throws Exception
     {
         final String url = "jdbc:td:///db01;user=user01;password=pass01;k01=v01;k02=v02";
-        Config config = Config.parseJdbcURL(url);
+        JDBCConfig config = JDBCConfig.parseJdbcURL(url);
         assertEquals(url, config.url);
         assertEquals("api.treasuredata.com", config.apiConfig.endpoint);
         assertEquals(80, config.apiConfig.port);
@@ -144,12 +144,12 @@ public class TestConfig
     {
         {
             final String url = "jdbc:td://host01;user=user01;password=pass01;k01=v01;k02=v02";
-            Config config = Config.parseJdbcURL(url);
+            JDBCConfig config = JDBCConfig.parseJdbcURL(url);
             assertEquals("default", config.database);
         }
         {
             final String url = "jdbc:td://host01/;user=user01;password=pass01;k01=v01;k02=v02";
-            Config config = Config.parseJdbcURL(url);
+            JDBCConfig config = JDBCConfig.parseJdbcURL(url);
             assertEquals("default", config.database);
         }
     }
@@ -160,7 +160,7 @@ public class TestConfig
     {
         {
             final String url = "jdbc:td://host01:9999/db01";
-            Config config = Config.parseJdbcURL(url);
+            JDBCConfig config = JDBCConfig.parseJdbcURL(url);
             assertEquals(url, config.url);
             assertEquals("host01", config.apiConfig.endpoint);
             assertEquals(9999, config.apiConfig.port);
@@ -170,7 +170,7 @@ public class TestConfig
         }
         {
             final String url = "jdbc:td:///db01";
-            Config config = Config.parseJdbcURL(url);
+            JDBCConfig config = JDBCConfig.parseJdbcURL(url);
             assertEquals(url, config.url);
             assertEquals("api.treasuredata.com", config.apiConfig.endpoint);
             assertEquals(80, config.apiConfig.port);

@@ -20,7 +20,7 @@ package com.treasuredata.jdbc.command;
 
 import com.treasure_data.client.ClientException;
 import com.treasure_data.client.TreasureDataClient;
-import com.treasuredata.jdbc.Config;
+import com.treasuredata.jdbc.JDBCConfig;
 import com.treasuredata.jdbc.ConfigBuilder;
 import com.treasuredata.jdbc.TDResultSetMetaData;
 import com.treasure_data.model.AuthenticateRequest;
@@ -44,7 +44,7 @@ import static org.junit.Assert.fail;
 
 public class TestTDClientAPI
 {
-    private static Config newTestConfig()
+    private static JDBCConfig newTestConfig()
             throws SQLException
     {
         ConfigBuilder configBuilder = new ConfigBuilder();
@@ -58,7 +58,7 @@ public class TestTDClientAPI
     public void testWaitJobResult01()
             throws Exception
     {
-        Config config = newTestConfig();
+        JDBCConfig config = newTestConfig();
         TreasureDataClient c = new TreasureDataClient(config.toProperties())
         {
             @Override
@@ -94,7 +94,7 @@ public class TestTDClientAPI
     public void testWaitJobResult02()
             throws Exception
     {
-        Config config = newTestConfig();
+        JDBCConfig config = newTestConfig();
         { // error occurred
             final String jobID = "12345";
             TreasureDataClient c = new TreasureDataClient(config.toProperties())
@@ -173,7 +173,7 @@ public class TestTDClientAPI
     public void testWaitJobResult03()
             throws Exception
     {
-        Config config = newTestConfig();
+        JDBCConfig config = newTestConfig();
         TreasureDataClient c = new TreasureDataClient(config.toProperties())
         {
             private int count = 0;
@@ -218,7 +218,7 @@ public class TestTDClientAPI
     public void testMetaDataWithSelect1()
             throws Exception
     {
-        Config config = newTestConfig();
+        JDBCConfig config = newTestConfig();
         TreasureDataClient c = new TreasureDataClient(config.toProperties())
         {
             @Override
@@ -243,7 +243,7 @@ public class TestTDClientAPI
         };
 
         { // hive
-            Config newConfig = new ConfigBuilder(config).setType(Job.Type.HIVE).createConnectionConfig();
+            JDBCConfig newConfig = new ConfigBuilder(config).setType(Job.Type.HIVE).createConnectionConfig();
             TDClientAPI api = new TDClientAPI(newConfig, c, new Database("mugadb"));
 
             TDResultSetMetaData md = api.getMetaDataWithSelect1();
@@ -252,7 +252,7 @@ public class TestTDClientAPI
             assertEquals(Types.INTEGER, md.getColumnType(1));
         }
         { // presto
-            Config newConfig = new ConfigBuilder(config).setType(Job.Type.PRESTO).createConnectionConfig();
+            JDBCConfig newConfig = new ConfigBuilder(config).setType(Job.Type.PRESTO).createConnectionConfig();
             TDClientAPI api = new TDClientAPI(newConfig, c, new Database("mugadb"));
             TDResultSetMetaData md = api.getMetaDataWithSelect1();
             assertEquals(1, md.getColumnCount());

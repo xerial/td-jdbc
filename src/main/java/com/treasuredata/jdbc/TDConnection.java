@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class TDConnection implements Connection, Constants {
-    private final Config config;
+    private final JDBCConfig config;
     private boolean autoCommit = false;
     private boolean readOnly = false;
     private TDClient client;
@@ -44,10 +44,10 @@ public class TDConnection implements Connection, Constants {
 
     public TDConnection(String url, Properties props)
         throws SQLException {
-        this(Config.newConfig(url, props));
+        this(JDBCConfig.newConfig(url, props));
     }
 
-    public TDConnection(Config config)
+    public TDConnection(JDBCConfig config)
         throws SQLException {
         this.config = config;
         // create a Database object
@@ -57,7 +57,7 @@ public class TDConnection implements Connection, Constants {
         client = TDClient.newBuilder().setProperties(config.toProperties()).build();
     }
 
-    public Config getConfig() {
+    public JDBCConfig getConfig() {
         return config;
     }
 

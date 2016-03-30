@@ -22,9 +22,7 @@ import com.treasuredata.client.TDClient;
 import com.treasuredata.client.model.TDColumn;
 import com.treasuredata.client.model.TDDatabase;
 import com.treasuredata.client.model.TDTable;
-import com.treasuredata.jdbc.model.TDDataType;
 import com.treasuredata.jdbc.model.TDImportedKey;
-import org.json.simple.JSONValue;
 
 import java.sql.*;
 import java.util.*;
